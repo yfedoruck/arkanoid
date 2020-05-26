@@ -1,7 +1,6 @@
 package game
 
 import (
-	"fmt"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 	"github.com/yfedoruck/billiards/pkg/fail"
@@ -62,7 +61,7 @@ func Run() {
 		}
 		if ball.IsPushed() {
 			ball = ball.Move()
-			fmt.Printf("%T", ball)
+			//fmt.Printf("%T", ball)
 			//return
 		}
 

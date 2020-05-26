@@ -11,5 +11,5 @@ func NewStopBall(bb *BlankBall) Ball {
 }
 
 func (r *StopBall) Move() Ball {
-	return NewUpBall(CopyBlankBall(r))
+	return NewUpRight(CopyBlankBall(r))
 }

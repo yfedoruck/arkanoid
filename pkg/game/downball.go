@@ -11,9 +11,13 @@ func NewDownBall(bb *BlankBall) Ball {
 }
 
 func (r *DownBall) Move() Ball {
-	if r.position.Y <= (BoardHeight+r.radius) {
+	if r.position.Y <= (BoardHeight + r.radius) {
 		return NewUpBall(CopyBlankBall(r))
 	}
 	r.position.Y -= r.delta
 	return r
+}
+func (r *DownBall) MoveLeft() {
+}
+func (r *DownBall) MoveRight() {
 }
