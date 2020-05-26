@@ -61,6 +61,7 @@ func Run() {
 		}
 		if ball.IsPushed() {
 			ball = ball.Move()
+			ball.Connect(&board)
 			//fmt.Printf("%T", ball)
 			//return
 		}

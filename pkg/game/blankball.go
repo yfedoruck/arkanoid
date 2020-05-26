@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	BallRadius = 24
+	BallRadius = 12
 )
 
 type Ball interface {
@@ -25,6 +25,7 @@ type Ball interface {
 	Delta() float64
 	DeltaX() float64
 	DeltaY() float64
+	Connect(b *Board)
 }
 
 type BlankBall struct {
@@ -34,6 +35,7 @@ type BlankBall struct {
 	sprite   *pixel.Sprite
 	pushed   bool
 	delta    float64
+	board    *Board
 }
 
 func NewBlankBall(win *pixelgl.Window) *BlankBall {
@@ -116,11 +118,14 @@ func (r *BlankBall) Sprite() *pixel.Sprite {
 	return r.sprite
 }
 
-
 func (r *BlankBall) DeltaX() float64 {
-	return r.delta/5
+	return r.delta / 3
 }
 
 func (r *BlankBall) DeltaY() float64 {
 	return r.delta
+}
+
+func (r *BlankBall) Connect(b *Board) {
+	r.board = b
 }

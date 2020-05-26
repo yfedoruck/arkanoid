@@ -59,3 +59,15 @@ func (r *Board) MoveRight(delta float64) {
 func (r Board) Draw() {
 	r.sprite.Draw(r.win, pixel.IM.Moved(r.position))
 }
+
+func (r Board) Area() VecX {
+	return VecX{
+		r.position.X - r.width/2,
+		r.position.X + r.width/2,
+	}
+}
+
+type VecX struct {
+	X1 float64
+	X2 float64
+}
