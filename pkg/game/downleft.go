@@ -15,7 +15,8 @@ func (r *DownLeft) Move() Ball {
 		if r.board.Area().X1 <= r.position.X && r.position.X <= r.board.Area().X2 {
 			return NewUpLeft(CopyBlankBall(r))
 		} else {
-			return NewPause(CopyBlankBall(r))
+			r.Restart()
+			return NewStopBall(CopyBlankBall(r))
 		}
 	}
 	if r.position.X <= (r.win.Bounds().Min.X + r.radius) {

@@ -11,7 +11,7 @@ const (
 
 type Ball interface {
 	Move() Ball
-	OnStartPosition(board Board)
+	OnStartPosition()
 	MoveLeft()
 	MoveRight()
 	Push()
@@ -26,6 +26,7 @@ type Ball interface {
 	DeltaX() float64
 	DeltaY() float64
 	Connect(b *Board)
+	//Restart() Ball
 }
 
 type BlankBall struct {
@@ -60,9 +61,9 @@ func CopyBlankBall(b Ball) *BlankBall {
 	}
 }
 
-func (r *BlankBall) OnStartPosition(board Board) {
-	bp := board.StartPosition()
-	r.position = pixel.V(bp.X, bp.Y+r.radius)
+func (r *BlankBall) OnStartPosition() {
+	bp := r.board.StartPosition()
+	r.position = pixel.V(bp.X, bp.Y+r.Diameter())
 }
 
 func (r *BlankBall) Delta() float64 {
@@ -82,6 +83,10 @@ func (r *BlankBall) MoveRight() {
 
 func (r *BlankBall) Push() {
 	r.pushed = true
+}
+
+func (r *BlankBall) Stop() {
+	r.pushed = false
 }
 
 func (r BlankBall) IsPushed() bool {
@@ -128,4 +133,11 @@ func (r *BlankBall) DeltaY() float64 {
 
 func (r *BlankBall) Connect(b *Board) {
 	r.board = b
+}
+
+func (r *BlankBall) Restart() {
+	r.Stop()
+	r.position = pixel.ZV
+	r.OnStartPosition()
+	r.board.OnStartPosition()
 }
