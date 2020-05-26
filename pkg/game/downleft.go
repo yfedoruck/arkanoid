@@ -17,8 +17,8 @@ func (r *DownLeft) Move() Ball {
 	if r.position.X <= (r.win.Bounds().Min.X + r.radius) {
 		return NewDownRight(CopyBlankBall(r))
 	}
-	r.position.Y -= r.delta
-	r.position.X -= r.delta/5
+	r.position.Y -= r.DeltaY()
+	r.position.X -= r.DeltaX()
 	return r
 }
 

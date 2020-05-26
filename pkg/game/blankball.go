@@ -23,6 +23,8 @@ type Ball interface {
 	Position() pixel.Vec
 	Sprite() *pixel.Sprite
 	Delta() float64
+	DeltaX() float64
+	DeltaY() float64
 }
 
 type BlankBall struct {
@@ -112,4 +114,13 @@ func (r *BlankBall) Position() pixel.Vec {
 }
 func (r *BlankBall) Sprite() *pixel.Sprite {
 	return r.sprite
+}
+
+
+func (r *BlankBall) DeltaX() float64 {
+	return r.delta/5
+}
+
+func (r *BlankBall) DeltaY() float64 {
+	return r.delta
 }
