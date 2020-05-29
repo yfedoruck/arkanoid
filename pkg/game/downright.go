@@ -30,7 +30,7 @@ func (r *DownRight) Move() Ball {
 			return NewStopBall(CopyBlankBall(r))
 		}
 	}
-	if r.hitRightWall() {
+	if r.hitRightBorder() {
 		return NewDownLeft(CopyBlankBall(r))
 	}
 	r.position.Y -= r.DeltaY()

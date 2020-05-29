@@ -26,7 +26,7 @@ func (r *UpLeft) Move() Ball {
 		return NewDownLeft(CopyBlankBall(r))
 	}
 
-	if r.hitLeftWall() {
+	if r.hitLeftBorder() {
 		return NewUpRight(CopyBlankBall(r))
 	}
 	r.position.Y += r.DeltaY()

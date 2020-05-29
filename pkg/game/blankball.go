@@ -142,11 +142,11 @@ func (r *BlankBall) SetBrick(b *Brick) {
 	r.brick = b
 }
 
-func (r BlankBall) hitRightWall() bool {
+func (r BlankBall) hitRightBorder() bool {
 	return r.position.X >= (r.win.Bounds().Max.X - r.radius)
 }
 
-func (r BlankBall) hitLeftWall() bool {
+func (r BlankBall) hitLeftBorder() bool {
 	return r.position.X <= (r.win.Bounds().Min.X + r.radius)
 }
 
