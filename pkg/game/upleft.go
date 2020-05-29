@@ -12,14 +12,21 @@ func NewUpLeft(bb *BlankBall) Ball {
 
 func (r *UpLeft) Move() Ball {
 
-	if r.hitCeil() || r.hitBrickBottom() {
+	if r.brick.IsNotHit() {
+		if r.hitBrickRight() {
+			return NewUpRight(CopyBlankBall(r))
+		}
+
+		if r.hitBrickBottom() {
+			return NewDownLeft(CopyBlankBall(r))
+		}
+	}
+
+	if r.hitCeil() {
 		return NewDownLeft(CopyBlankBall(r))
 	}
 
-	if r.position.Y >= (r.win.Bounds().Max.Y - r.radius) {
-		return NewDownLeft(CopyBlankBall(r))
-	}
-	if r.position.X < r.win.Bounds().Min.X + r.radius {
+	if r.hitLeftWall() {
 		return NewUpRight(CopyBlankBall(r))
 	}
 	r.position.Y += r.DeltaY()

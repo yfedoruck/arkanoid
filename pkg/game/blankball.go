@@ -1,6 +1,7 @@
 package game
 
 import (
+	"fmt"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 )
@@ -145,6 +146,10 @@ func (r BlankBall) hitRightWall() bool {
 	return r.position.X >= (r.win.Bounds().Max.X - r.radius)
 }
 
+func (r BlankBall) hitLeftWall() bool {
+	return r.position.X <= (r.win.Bounds().Min.X + r.radius)
+}
+
 func (r BlankBall) hitCeil() bool {
 	return r.position.Y >= (r.win.Bounds().Max.Y - r.radius)
 }
@@ -164,6 +169,8 @@ func (r BlankBall) hitBrickBottom() bool {
 	side := r.brick.Bottom()
 	if (r.top() >= side.Y) &&
 		(side.X1 <= r.right() && r.left() <= side.X2) {
+		fmt.Println("hitBrickBottom")
+		r.brick.Delete()
 		return true
 	}
 
@@ -178,6 +185,13 @@ func (r BlankBall) isUnderBrick() bool {
 	return r.position.Y < r.brick.position.Y
 }
 
+func (r BlankBall) isBeforeBrick() bool {
+	return r.position.X < r.brick.position.X
+}
+func (r BlankBall) isAfterBrick() bool {
+	return r.position.X > r.brick.position.X
+}
+
 func (r BlankBall) hitBrickTop() bool {
 	if r.isUnderBrick() {
 		return false
@@ -185,6 +199,40 @@ func (r BlankBall) hitBrickTop() bool {
 	side := r.brick.Top()
 	if (r.bottom() <= side.Y) &&
 		(side.X1 <= r.right() && r.left() <= side.X2) {
+		fmt.Println("hitBrickTop")
+		r.brick.Delete()
+		return true
+	}
+
+	return false
+}
+
+func (r BlankBall) hitBrickLeft() bool {
+	if r.isAfterBrick() {
+		//fmt.Println("isAfterBrick")
+		return false
+	}
+	side := r.brick.Left()
+	if (r.right() >= side.X) &&
+		(side.Y1 <= r.bottom() && r.top() <= side.Y2) {
+		fmt.Println("hitBrickLeft")
+		r.brick.Delete()
+		return true
+	}
+
+	return false
+}
+
+func (r BlankBall) hitBrickRight() bool {
+	if r.isBeforeBrick() {
+		//fmt.Println("isBeforeBrick")
+		return false
+	}
+	side := r.brick.Right()
+	if (r.left() <= side.X) &&
+		(side.Y1 <= r.bottom() && r.top() <= side.Y2) {
+		fmt.Println("hitBrickRight")
+		r.brick.Delete()
 		return true
 	}
 

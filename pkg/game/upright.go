@@ -11,9 +11,20 @@ func NewUpRight(bb *BlankBall) Ball {
 }
 
 func (r *UpRight) Move() Ball {
-	if r.hitCeil() || r.hitBrickBottom() {
+	if r.brick.IsNotHit() {
+		if r.hitBrickLeft() {
+			return NewUpLeft(CopyBlankBall(r))
+		}
+
+		if r.hitBrickBottom() {
+			return NewDownRight(CopyBlankBall(r))
+		}
+	}
+
+	if r.hitCeil() {
 		return NewDownRight(CopyBlankBall(r))
 	}
+
 	if r.hitRightWall() {
 		return NewUpLeft(CopyBlankBall(r))
 	}

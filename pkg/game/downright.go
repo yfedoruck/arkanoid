@@ -12,17 +12,17 @@ func NewDownRight(bb *BlankBall) Ball {
 
 func (r *DownRight) Move() Ball {
 
-	if r.hitBrickTop() {
-		return NewUpRight(CopyBlankBall(r))
+	if r.brick.IsNotHit() {
+		if r.hitBrickTop() {
+			return NewUpRight(CopyBlankBall(r))
+		}
+
+		if r.hitBrickLeft() {
+			return NewDownLeft(CopyBlankBall(r))
+		}
 	}
 
 	if r.crossBottomLine() {
-		//fmt.Println(r.board.Area())
-		//fmt.Println(r.win.Bounds().Min.Y + r.radius + r.board.height)
-		//fmt.Println("ball position", r.position.Y)
-		//fmt.Println("ball radius", r.radius)
-		//fmt.Println("board height", r.board.height)
-
 		if r.hitBoard() {
 			return NewUpRight(CopyBlankBall(r))
 		} else {
@@ -30,7 +30,7 @@ func (r *DownRight) Move() Ball {
 			return NewStopBall(CopyBlankBall(r))
 		}
 	}
-	if r.position.X > (r.win.Bounds().Max.X - r.radius) {
+	if r.hitRightWall() {
 		return NewDownLeft(CopyBlankBall(r))
 	}
 	r.position.Y -= r.DeltaY()

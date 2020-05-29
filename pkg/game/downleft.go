@@ -11,8 +11,14 @@ func NewDownLeft(bb *BlankBall) Ball {
 }
 
 func (r *DownLeft) Move() Ball {
-	if r.hitBrickTop() {
-		return NewUpLeft(CopyBlankBall(r))
+	if r.brick.IsNotHit() {
+		if r.hitBrickTop() {
+			return NewUpLeft(CopyBlankBall(r))
+		}
+
+		if r.hitBrickRight() {
+			return NewDownRight(CopyBlankBall(r))
+		}
 	}
 
 	if r.crossBottomLine() {
@@ -23,7 +29,7 @@ func (r *DownLeft) Move() Ball {
 			return NewStopBall(CopyBlankBall(r))
 		}
 	}
-	if r.position.X <= (r.win.Bounds().Min.X + r.radius) {
+	if r.hitLeftWall() {
 		return NewDownRight(CopyBlankBall(r))
 	}
 	r.position.Y -= r.DeltaY()

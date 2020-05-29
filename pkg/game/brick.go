@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	BrickWidth = 64
+	BrickWidth  = 64
 	BrickHeight = 32
 )
 
@@ -16,6 +16,7 @@ type Brick struct {
 	win      *pixelgl.Window
 	position pixel.Vec
 	sprite   *pixel.Sprite
+	live     bool
 }
 
 type BrickSideY struct {
@@ -30,24 +31,25 @@ func NewBrick(win *pixelgl.Window) *Brick {
 		win:      win,
 		position: pixel.ZV,
 		sprite:   NewSprite().Brick(),
-		width:  BrickWidth,
-		height:  BrickHeight,
+		width:    BrickWidth,
+		height:   BrickHeight,
+		live:     true,
 	}
 }
 
 func (r Brick) Left() BrickSideY {
 	return BrickSideY{
-		X: r.position.X - r.width/2,
-		Y1: r.position.Y + r.height/2,
-		Y2: r.position.Y - r.height/2,
+		X:  r.position.X - r.width/2,
+		Y1: r.position.Y - r.height/2,
+		Y2: r.position.Y + r.height/2,
 	}
 }
 
 func (r Brick) Right() BrickSideY {
 	return BrickSideY{
-		X: r.position.X + r.width/2,
-		Y1: r.position.Y + r.height/2,
-		Y2: r.position.Y - r.height/2,
+		X:  r.position.X + r.width/2,
+		Y1: r.position.Y - r.height/2,
+		Y2: r.position.Y + r.height/2,
 	}
 }
 
@@ -55,17 +57,23 @@ func (r Brick) Top() BrickSideX {
 	return BrickSideX{
 		X1: r.position.X - r.width/2,
 		X2: r.position.X + r.height/2,
-		Y: r.position.Y + r.height/2,
+		Y:  r.position.Y + r.height/2,
 	}
 }
 func (r Brick) Bottom() BrickSideX {
 	return BrickSideX{
 		X1: r.position.X - r.width/2,
 		X2: r.position.X + r.width/2,
-		Y: r.position.Y - r.height/2,
+		Y:  r.position.Y - r.height/2,
 	}
 }
 
+func (r *Brick) Delete() {
+	r.live = false
+}
+func (r *Brick) IsNotHit() bool {
+	return r.live
+}
 
 func (r *Brick) OnStartPosition() {
 	r.position = pixel.V(r.win.Bounds().W()/2, r.win.Bounds().H()/2)

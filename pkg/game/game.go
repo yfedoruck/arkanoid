@@ -60,7 +60,9 @@ func Run() {
 
 		board.Draw()
 		ball.Draw()
-		brick.Draw()
+		if brick.IsNotHit() {
+			brick.Draw()
+		}
 
 		//boardSprite.Draw(win, pixel.IM.Moved(vec))
 		//ballSprite.Draw(win, pixel.IM.Moved(board.StartBallPosition(ball)))
