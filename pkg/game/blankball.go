@@ -26,6 +26,7 @@ type Ball interface {
 	DeltaX() float64
 	DeltaY() float64
 	Connect(b *Board)
+	SetBrick(b *Brick)
 	//Restart() Ball
 }
 
@@ -37,6 +38,7 @@ type BlankBall struct {
 	pushed   bool
 	delta    float64
 	board    *Board
+	brick    *Brick
 }
 
 func NewBlankBall(win *pixelgl.Window) *BlankBall {
@@ -133,6 +135,73 @@ func (r *BlankBall) DeltaY() float64 {
 
 func (r *BlankBall) Connect(b *Board) {
 	r.board = b
+}
+
+func (r *BlankBall) SetBrick(b *Brick) {
+	r.brick = b
+}
+
+func (r BlankBall) hitRightWall() bool {
+	return r.position.X >= (r.win.Bounds().Max.X - r.radius)
+}
+
+func (r BlankBall) hitCeil() bool {
+	return r.position.Y >= (r.win.Bounds().Max.Y - r.radius)
+}
+
+func (r BlankBall) hitBoard() bool {
+	return r.board.Area().X1 <= r.position.X && r.position.X <= r.board.Area().X2
+}
+
+func (r BlankBall) crossBottomLine() bool {
+	return r.position.Y < (r.win.Bounds().Min.Y + r.radius + r.board.height)
+}
+
+func (r BlankBall) hitBrickBottom() bool {
+	if r.isAboveBrick() {
+		return false
+	}
+	side := r.brick.Bottom()
+	if (r.top() >= side.Y) &&
+		(side.X1 <= r.right() && r.left() <= side.X2) {
+		return true
+	}
+
+	return false
+}
+
+func (r BlankBall) isAboveBrick() bool {
+	return r.position.Y > r.brick.position.Y
+}
+
+func (r BlankBall) isUnderBrick() bool {
+	return r.position.Y < r.brick.position.Y
+}
+
+func (r BlankBall) hitBrickTop() bool {
+	if r.isUnderBrick() {
+		return false
+	}
+	side := r.brick.Top()
+	if (r.bottom() <= side.Y) &&
+		(side.X1 <= r.right() && r.left() <= side.X2) {
+		return true
+	}
+
+	return false
+}
+
+func (r BlankBall) top() float64 {
+	return r.position.Y + r.radius
+}
+func (r BlankBall) bottom() float64 {
+	return r.position.Y - r.radius
+}
+func (r BlankBall) right() float64 {
+	return r.position.X + r.radius
+}
+func (r BlankBall) left() float64 {
+	return r.position.X - r.radius
 }
 
 func (r *BlankBall) Restart() {

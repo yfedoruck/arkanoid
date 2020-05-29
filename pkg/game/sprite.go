@@ -9,6 +9,11 @@ import (
 	"path/filepath"
 )
 
+const (
+	SpriteWidth = 180
+	SpriteHeight = 136
+)
+
 type Sprite struct {
 	picture *pixel.PictureData
 	ball    *pixel.Sprite
@@ -25,6 +30,10 @@ func (r Sprite) Ball() *pixel.Sprite {
 }
 func (r Sprite) Board() *pixel.Sprite {
 	return pixel.NewSprite(r.picture, pixel.R(0, 0, 160, 25))
+}
+
+func (r Sprite) Brick() *pixel.Sprite {
+	return pixel.NewSprite(r.picture, pixel.R(0, SpriteHeight - BrickHeight, BrickWidth, SpriteHeight))
 }
 
 func (r *Sprite) loadPicture(path string) {

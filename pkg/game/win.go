@@ -7,7 +7,16 @@ import (
 	"golang.org/x/image/colornames"
 )
 
-func NewWindow() *pixelgl.Window {
+type Screen struct {
+	window *pixelgl.Window
+}
+
+func (r Screen) Window() *pixelgl.Window {
+	return r.window
+}
+
+func NewScreen() *Screen {
+
 	cfg := pixelgl.WindowConfig{
 		Title:  "Pixel Rocks!",
 		Bounds: pixel.R(0, 0, 1024, 768),
@@ -18,6 +27,7 @@ func NewWindow() *pixelgl.Window {
 
 	win.SetSmooth(true)
 	win.Clear(colornames.Greenyellow)
+	win.SetTitle("Arkanoid")
 
-	return win
+	return &Screen{window: win}
 }

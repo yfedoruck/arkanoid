@@ -14,18 +14,22 @@ func Run() {
 
 	//var center = win.Bounds().Center()
 	var (
-		win   = NewWindow()
-		delta = 0.0
-		last  = time.Now()
-		fps   = time.Tick(time.Second / 60)
-		bb    = NewBlankBall(win)
+		screen = NewScreen()
+		win    = screen.Window()
+		delta  = 0.0
+		last   = time.Now()
+		fps    = time.Tick(time.Second / 60)
+		bb     = NewBlankBall(win)
 	)
 	//var center = win.Bounds().Center()
-	board := NewBoard(win)
+	board := NewBoard(screen)
 	ball := NewStopBall(bb)
 	ball.Connect(&board)
 	board.OnStartPosition()
 	ball.OnStartPosition()
+
+	brick := NewBrick(win)
+	brick.OnStartPosition()
 	for !win.Closed() {
 		var dt = time.Since(last).Seconds()
 		last = time.Now()
@@ -49,12 +53,14 @@ func Run() {
 		if ball.IsPushed() {
 			ball = ball.Move()
 			ball.Connect(&board)
+			ball.SetBrick(brick)
 			//fmt.Printf("%T", ball)
 			//return
 		}
 
 		board.Draw()
 		ball.Draw()
+		brick.Draw()
 
 		//boardSprite.Draw(win, pixel.IM.Moved(vec))
 		//ballSprite.Draw(win, pixel.IM.Moved(board.StartBallPosition(ball)))

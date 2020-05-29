@@ -18,11 +18,11 @@ type Board struct {
 	sprite   *pixel.Sprite
 }
 
-func NewBoard(win *pixelgl.Window) Board {
+func NewBoard(screen *Screen) Board {
 	return Board{
 		width:    BoardWidth,
 		height:   BoardHeight,
-		win:      win,
+		win:      screen.Window(),
 		position: pixel.ZV,
 		sprite:   NewSprite().Board(),
 	}
@@ -65,9 +65,4 @@ func (r Board) Area() VecX {
 		r.position.X - r.width/2,
 		r.position.X + r.width/2,
 	}
-}
-
-type VecX struct {
-	X1 float64
-	X2 float64
 }

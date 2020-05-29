@@ -11,10 +11,10 @@ func NewUpRight(bb *BlankBall) Ball {
 }
 
 func (r *UpRight) Move() Ball {
-	if r.position.Y >= (r.win.Bounds().Max.Y - r.radius) {
+	if r.hitCeil() || r.hitBrickBottom() {
 		return NewDownRight(CopyBlankBall(r))
 	}
-	if r.position.X >= (r.win.Bounds().Max.X - r.radius) {
+	if r.hitRightWall() {
 		return NewUpLeft(CopyBlankBall(r))
 	}
 	r.position.Y += r.DeltaY()
