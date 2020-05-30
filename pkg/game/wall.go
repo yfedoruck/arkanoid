@@ -11,17 +11,21 @@ type Wall struct {
 }
 
 func NewWall(win *pixelgl.Window) *Wall {
-	w := &Wall{win: win}
-	w.Build()
+	var w = &Wall{}
+	w.Build(win)
 	return w
 }
 
-func (r *Wall) Build() {
-	for i := 0.0; i < 4; i++ {
-		brick := NewBrick(r.win)
-		brick.MoveTo(pixel.V(r.win.Bounds().Min.X+brick.width*(i+1), r.win.Bounds().H()/2))
-		r.wall = append(r.wall, brick)
+func (r *Wall) Build(win *pixelgl.Window) {
+	for i := 0.0; i < 10; i++ {
+		brick := NewBrick(win)
+		brick.MoveTo(pixel.V(win.Bounds().Min.X+brick.width*(i+1), win.Bounds().H()/2))
+		r.Add(brick)
 	}
+}
+
+func (r *Wall) Add(brick *Brick) {
+	r.wall = append(r.wall, brick)
 }
 
 func (r Wall) Draw() {

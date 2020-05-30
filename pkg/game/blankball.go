@@ -74,10 +74,16 @@ func (r *BlankBall) SetDelta(delta float64) {
 }
 
 func (r *BlankBall) MoveLeft() {
+	if r.position.X <= r.win.Bounds().Min.X+r.board.Width()/2 {
+		return
+	}
 	r.position.X -= r.delta
 }
 
 func (r *BlankBall) MoveRight() {
+	if r.position.X >= r.win.Bounds().Max.X-r.board.Width()/2 {
+		return
+	}
 	r.position.X += r.delta
 }
 
@@ -159,7 +165,7 @@ func (r BlankBall) hitBrickBottom(brick *Brick) bool {
 	if r.isAboveBrick(brick) {
 		return false
 	}
-	side :=brick.Bottom()
+	side := brick.Bottom()
 	if (r.top() >= side.Y) &&
 		(side.X1 <= r.right() && r.left() <= side.X2) {
 		fmt.Println("hitBrickBottom")
