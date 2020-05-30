@@ -11,7 +11,7 @@ const (
 )
 
 type Ball interface {
-	Move(brick *Brick) Ball
+	Move(wall *Wall) Ball
 	OnStartPosition()
 	MoveLeft()
 	MoveRight()
@@ -27,8 +27,6 @@ type Ball interface {
 	DeltaX() float64
 	DeltaY() float64
 	Connect(b *Board)
-	//SetBrick(b *Brick)
-	//Restart() Ball
 }
 
 type BlankBall struct {
@@ -39,8 +37,6 @@ type BlankBall struct {
 	pushed   bool
 	delta    float64
 	board    *Board
-	//brick    *Brick
-	//wall    []*Brick
 }
 
 func NewBlankBall(win *pixelgl.Window) *BlankBall {

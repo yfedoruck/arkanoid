@@ -10,6 +10,6 @@ func NewPause(bb *BlankBall) Ball {
 	}
 }
 
-func (r *Pause) Move(brick *Brick) Ball {
+func (r *Pause) Move(wall *Wall) Ball {
 	return NewPause(CopyBlankBall(r))
 }

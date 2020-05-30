@@ -10,6 +10,6 @@ func NewStopBall(bb *BlankBall) Ball {
 	}
 }
 
-func (r *StopBall) Move(brick *Brick) Ball {
+func (r *StopBall) Move(wall *Wall) Ball {
 	return NewUpRight(CopyBlankBall(r))
 }

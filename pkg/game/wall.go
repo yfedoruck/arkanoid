@@ -7,13 +7,11 @@ import (
 
 type Wall struct {
 	win   *pixelgl.Window
-	brick *Brick
-	ball  *Ball
 	wall  []*Brick
 }
 
-func NewWall(win *pixelgl.Window, ball *Ball) *Wall {
-	w := &Wall{win: win, ball: ball}
+func NewWall(win *pixelgl.Window) *Wall {
+	w := &Wall{win: win}
 	w.Build()
 	return w
 }

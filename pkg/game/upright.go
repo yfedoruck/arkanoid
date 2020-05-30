@@ -10,14 +10,16 @@ func NewUpRight(bb *BlankBall) Ball {
 	}
 }
 
-func (r *UpRight) Move(brick *Brick) Ball {
-	if brick.IsNotHit() {
-		if r.hitBrickLeft(brick) {
-			return NewUpLeft(CopyBlankBall(r))
-		}
+func (r *UpRight) Move(wall *Wall) Ball {
+	for _, brick := range wall.wall {
+		if brick.IsNotHit() {
+			if r.hitBrickLeft(brick) {
+				return NewUpLeft(CopyBlankBall(r))
+			}
 
-		if r.hitBrickBottom(brick) {
-			return NewDownRight(CopyBlankBall(r))
+			if r.hitBrickBottom(brick) {
+				return NewDownRight(CopyBlankBall(r))
+			}
 		}
 	}
 
