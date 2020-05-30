@@ -10,14 +10,14 @@ func NewUpLeft(bb *BlankBall) Ball {
 	}
 }
 
-func (r *UpLeft) Move() Ball {
+func (r *UpLeft) Move(brick *Brick) Ball {
 
-	if r.brick.IsNotHit() {
-		if r.hitBrickRight() {
+	if brick.IsNotHit() {
+		if r.hitBrickRight(brick) {
 			return NewUpRight(CopyBlankBall(r))
 		}
 
-		if r.hitBrickBottom() {
+		if r.hitBrickBottom(brick) {
 			return NewDownLeft(CopyBlankBall(r))
 		}
 	}

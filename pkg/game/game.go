@@ -29,6 +29,7 @@ func Run() {
 	ball.OnStartPosition()
 
 	brick := NewBrick(win)
+	//wall := NewWall(win, &ball)
 	brick.OnStartPosition()
 	for !win.Closed() {
 		var dt = time.Since(last).Seconds()
@@ -51,15 +52,16 @@ func Run() {
 			ball.Push()
 		}
 		if ball.IsPushed() {
-			ball = ball.Move()
+			ball = ball.Move(brick)
 			ball.Connect(&board)
-			ball.SetBrick(brick)
+			//ball.SetBrick(brick)
 			//fmt.Printf("%T", ball)
 			//return
 		}
 
 		board.Draw()
 		ball.Draw()
+		//wall.Draw()
 		if brick.IsNotHit() {
 			brick.Draw()
 		}

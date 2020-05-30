@@ -71,7 +71,7 @@ func (r Brick) Bottom() BrickSideX {
 func (r *Brick) Delete() {
 	r.live = false
 }
-func (r *Brick) IsNotHit() bool {
+func (r Brick) IsNotHit() bool {
 	return r.live
 }
 
@@ -81,4 +81,8 @@ func (r *Brick) OnStartPosition() {
 
 func (r Brick) Draw() {
 	r.sprite.Draw(r.win, pixel.IM.Moved(r.position))
+}
+
+func (r *Brick) MoveTo(pos pixel.Vec) {
+	r.position = pos
 }

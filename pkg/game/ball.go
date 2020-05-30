@@ -36,14 +36,14 @@ func (r RedBall) IsPushed() bool {
 	return r.pushed
 }
 
-func (r RedBall) Move() Ball {
+func (r RedBall) Move(brick *Brick) Ball {
 	//if r.position.Y <= r.win.Bounds().Max.Y {
 	//	r.position.Y += r.delta
 	//	return &UpBall{}
 	//} else {
 	//	return &DownBall{}
 	//}
-	return r.state.Move()
+	return r.state.Move(brick)
 }
 
 func (r *RedBall) MoveUp() {

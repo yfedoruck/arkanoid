@@ -11,7 +11,7 @@ const (
 )
 
 type Ball interface {
-	Move() Ball
+	Move(brick *Brick) Ball
 	OnStartPosition()
 	MoveLeft()
 	MoveRight()
@@ -27,7 +27,7 @@ type Ball interface {
 	DeltaX() float64
 	DeltaY() float64
 	Connect(b *Board)
-	SetBrick(b *Brick)
+	//SetBrick(b *Brick)
 	//Restart() Ball
 }
 
@@ -39,7 +39,8 @@ type BlankBall struct {
 	pushed   bool
 	delta    float64
 	board    *Board
-	brick    *Brick
+	//brick    *Brick
+	//wall    []*Brick
 }
 
 func NewBlankBall(win *pixelgl.Window) *BlankBall {
@@ -138,10 +139,6 @@ func (r *BlankBall) Connect(b *Board) {
 	r.board = b
 }
 
-func (r *BlankBall) SetBrick(b *Brick) {
-	r.brick = b
-}
-
 func (r BlankBall) hitRightBorder() bool {
 	return r.position.X >= (r.win.Bounds().Max.X - r.radius)
 }
@@ -162,77 +159,77 @@ func (r BlankBall) crossBottomLine() bool {
 	return r.position.Y < (r.win.Bounds().Min.Y + r.radius + r.board.height)
 }
 
-func (r BlankBall) hitBrickBottom() bool {
-	if r.isAboveBrick() {
+func (r BlankBall) hitBrickBottom(brick *Brick) bool {
+	if r.isAboveBrick(brick) {
 		return false
 	}
-	side := r.brick.Bottom()
+	side :=brick.Bottom()
 	if (r.top() >= side.Y) &&
 		(side.X1 <= r.right() && r.left() <= side.X2) {
 		fmt.Println("hitBrickBottom")
-		r.brick.Delete()
+		brick.Delete()
 		return true
 	}
 
 	return false
 }
 
-func (r BlankBall) isAboveBrick() bool {
-	return r.position.Y > r.brick.position.Y
+func (r BlankBall) isAboveBrick(brick *Brick) bool {
+	return r.position.Y > brick.position.Y
 }
 
-func (r BlankBall) isUnderBrick() bool {
-	return r.position.Y < r.brick.position.Y
+func (r BlankBall) isUnderBrick(brick *Brick) bool {
+	return r.position.Y < brick.position.Y
 }
 
-func (r BlankBall) isBeforeBrick() bool {
-	return r.position.X < r.brick.position.X
+func (r BlankBall) isBeforeBrick(brick *Brick) bool {
+	return r.position.X < brick.position.X
 }
-func (r BlankBall) isAfterBrick() bool {
-	return r.position.X > r.brick.position.X
+func (r BlankBall) isAfterBrick(brick *Brick) bool {
+	return r.position.X > brick.position.X
 }
 
-func (r BlankBall) hitBrickTop() bool {
-	if r.isUnderBrick() {
+func (r BlankBall) hitBrickTop(brick *Brick) bool {
+	if r.isUnderBrick(brick) {
 		return false
 	}
-	side := r.brick.Top()
+	side := brick.Top()
 	if (r.bottom() <= side.Y) &&
 		(side.X1 <= r.right() && r.left() <= side.X2) {
 		fmt.Println("hitBrickTop")
-		r.brick.Delete()
+		brick.Delete()
 		return true
 	}
 
 	return false
 }
 
-func (r BlankBall) hitBrickLeft() bool {
-	if r.isAfterBrick() {
+func (r BlankBall) hitBrickLeft(brick *Brick) bool {
+	if r.isAfterBrick(brick) {
 		//fmt.Println("isAfterBrick")
 		return false
 	}
-	side := r.brick.Left()
+	side := brick.Left()
 	if (r.right() >= side.X) &&
 		(side.Y1 <= r.bottom() && r.top() <= side.Y2) {
 		fmt.Println("hitBrickLeft")
-		r.brick.Delete()
+		brick.Delete()
 		return true
 	}
 
 	return false
 }
 
-func (r BlankBall) hitBrickRight() bool {
-	if r.isBeforeBrick() {
+func (r BlankBall) hitBrickRight(brick *Brick) bool {
+	if r.isBeforeBrick(brick) {
 		//fmt.Println("isBeforeBrick")
 		return false
 	}
-	side := r.brick.Right()
+	side := brick.Right()
 	if (r.left() <= side.X) &&
 		(side.Y1 <= r.bottom() && r.top() <= side.Y2) {
 		fmt.Println("hitBrickRight")
-		r.brick.Delete()
+		brick.Delete()
 		return true
 	}
 
