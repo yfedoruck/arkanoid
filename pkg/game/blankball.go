@@ -76,14 +76,14 @@ func (r *BlankBall) SetDelta(delta float64) {
 }
 
 func (r *BlankBall) MoveLeft() {
-	if r.position.X <= r.win.Bounds().Min.X+r.board.Width()/2 {
+	if r.position.X <= r.win.Bounds().Min.X+r.board.Width()/2+(BgBorderX*BgScale) {
 		return
 	}
 	r.position.X -= r.delta
 }
 
 func (r *BlankBall) MoveRight() {
-	if r.position.X >= r.win.Bounds().Max.X-r.board.Width()/2 {
+	if r.position.X >= r.win.Bounds().Max.X-r.board.Width()/2-(BgBorderX*BgScale) {
 		return
 	}
 	r.position.X += r.delta
@@ -144,15 +144,15 @@ func (r *BlankBall) Board() *Board {
 }
 
 func (r BlankBall) hitRightBorder() bool {
-	return r.position.X >= (r.win.Bounds().Max.X - r.radius)
+	return r.position.X >= (r.win.Bounds().Max.X - r.radius - (BgBorderX*BgScale))
 }
 
 func (r BlankBall) hitLeftBorder() bool {
-	return r.position.X <= (r.win.Bounds().Min.X + r.radius)
+	return r.position.X <= (r.win.Bounds().Min.X + r.radius + (BgBorderX*BgScale))
 }
 
 func (r BlankBall) hitCeil() bool {
-	return r.position.Y >= (r.win.Bounds().Max.Y - r.radius)
+	return r.position.Y >= (r.win.Bounds().Max.Y - r.radius - (BgBorderY*BgScale))
 }
 
 func (r BlankBall) hitBoard() bool {

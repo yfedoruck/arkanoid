@@ -21,25 +21,26 @@ func NewWall(win *pixelgl.Window, image *Image) *Wall {
 }
 
 func (r *Wall) Build() {
-	for i := 0.0; i < 15; i++ {
+	dx := 8.0
+	for i := 0.0; i < 10; i++ {
 		brick := NewBrick(r.image, Orange)
-		brick.MoveTo(pixel.V(r.win.Bounds().Min.X+brick.width*(i+1), r.win.Bounds().H()/2))
+		brick.MoveTo(pixel.V(r.win.Bounds().Min.X+brick.width*(i+1) + dx, r.win.Bounds().H()/2))
 		r.Add(brick)
 
 		brick = NewBrick(r.image, Green)
-		brick.MoveTo(pixel.V(r.win.Bounds().Min.X+brick.width*(i+1), r.win.Bounds().H()/2+brick.height))
+		brick.MoveTo(pixel.V(r.win.Bounds().Min.X+brick.width*(i+1) + dx, r.win.Bounds().H()/2+brick.height))
 		r.Add(brick)
 
 		brick = NewBrick(r.image, Pink)
-		brick.MoveTo(pixel.V(r.win.Bounds().Min.X+brick.width*(i+1), r.win.Bounds().H()/2+2*brick.height))
+		brick.MoveTo(pixel.V(r.win.Bounds().Min.X+brick.width*(i+1) + dx, r.win.Bounds().H()/2+2*brick.height))
 		r.Add(brick)
 
 		brick = NewBrick(r.image, Blue)
-		brick.MoveTo(pixel.V(r.win.Bounds().Min.X+brick.width*(i+1), r.win.Bounds().H()/2+3*brick.height))
+		brick.MoveTo(pixel.V(r.win.Bounds().Min.X+brick.width*(i+1) + dx, r.win.Bounds().H()/2+3*brick.height))
 		r.Add(brick)
 
 		brick = NewBrick(r.image, Red)
-		brick.MoveTo(pixel.V(r.win.Bounds().Min.X+brick.width*(i+1), r.win.Bounds().H()/2+4*brick.height))
+		brick.MoveTo(pixel.V(r.win.Bounds().Min.X+brick.width*(i+1) + dx, r.win.Bounds().H()/2+4*brick.height))
 		r.Add(brick)
 	}
 }

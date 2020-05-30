@@ -20,7 +20,7 @@ type Image struct {
 
 func NewImage() *Image {
 	var s = &Image{}
-	s.loadPicture("BasicArkanoidPack.png")
+	s.load("BasicArkanoidPack.png")
 	return s
 }
 
@@ -61,7 +61,12 @@ func (r Image) Brick(color int) *pixel.Sprite {
 	return pixel.NewSprite(r.picture, rec)
 }
 
-func (r *Image) loadPicture(path string) {
+func (r *Image) load(path string) {
+	var img = LoadSprite(path)
+	r.picture = pixel.PictureDataFromImage(img)
+}
+
+func LoadSprite(path string) image.Image {
 	file, err := os.Open(env.BasePath() + filepath.FromSlash("/static/"+path))
 	fail.Check(err)
 	defer func() {
@@ -70,5 +75,6 @@ func (r *Image) loadPicture(path string) {
 	}()
 	img, _, err := image.Decode(file)
 	fail.Check(err)
-	r.picture = pixel.PictureDataFromImage(img)
+
+	return img
 }

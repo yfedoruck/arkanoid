@@ -4,7 +4,6 @@ import (
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 	"github.com/yfedoruck/billiards/pkg/fail"
-	"golang.org/x/image/colornames"
 )
 
 type Screen struct {
@@ -51,16 +50,20 @@ func NewScreen() *Screen {
 	}
 }
 
+const (
+	WinHeight = 768
+	WinWidth = 714
+)
+
 func NewWindow() *pixelgl.Window {
 	cfg := pixelgl.WindowConfig{
 		Title:  "Arkanoid",
-		Bounds: pixel.R(0, 0, 1024, 768),
+		Bounds: pixel.R(0, 0, WinWidth, WinHeight),
 		VSync:  false,
 	}
 	win, err := pixelgl.NewWindow(cfg)
 	fail.Check(err)
 
 	win.SetSmooth(true)
-	win.Clear(colornames.Greenyellow)
 	return win
 }

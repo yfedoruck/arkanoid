@@ -22,6 +22,7 @@ func Run() {
 	ball.OnStartPosition()
 
 	wall := screen.Wall()
+	bg := NewBackground(win)
 	for !win.Closed() {
 		var dt = time.Since(last).Seconds()
 		last = time.Now()
@@ -29,6 +30,8 @@ func Run() {
 		delta = dt * 500
 		ball.SetDelta(delta)
 		win.Clear(colornames.Firebrick)
+		//win.Clear(colornames.Firebrick)
+		bg.Draw()
 
 		if win.Pressed(pixelgl.KeyLeft) {
 			board.MoveLeft(delta)

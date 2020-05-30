@@ -49,14 +49,14 @@ func (r *Board) StartPosition() pixel.Vec {
 }
 
 func (r *Board) MoveLeft(delta float64) {
-	if r.position.X <= r.win.Bounds().Min.X+r.width/2 {
+	if r.position.X <= r.win.Bounds().Min.X+r.width/2+(BgBorderX*BgScale) {
 		return
 	}
 	r.position.X -= delta
 }
 
 func (r *Board) MoveRight(delta float64) {
-	if r.position.X >= r.win.Bounds().Max.X-r.width/2 {
+	if r.position.X >= r.win.Bounds().Max.X-r.width/2-(BgBorderX*BgScale) {
 		return
 	}
 	r.position.X += delta
