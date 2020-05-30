@@ -6,8 +6,9 @@ import (
 )
 
 const (
-	BrickWidth  = 64
-	BrickHeight = 32
+	BrickWidth  = 64.0
+	BrickHeight = 32.0
+	BrickGap = 8.0
 )
 
 type Brick struct {
@@ -26,11 +27,11 @@ type BrickSideX struct {
 	X1, X2, Y float64
 }
 
-func NewBrick(win *pixelgl.Window) *Brick {
+func NewBrick(win *pixelgl.Window, color int) *Brick {
 	return &Brick{
 		win:      win,
 		position: pixel.ZV,
-		sprite:   NewSprite().Brick(),
+		sprite:   NewSprite().Brick(color),
 		width:    BrickWidth,
 		height:   BrickHeight,
 		live:     true,

@@ -32,8 +32,34 @@ func (r Sprite) Board() *pixel.Sprite {
 	return pixel.NewSprite(r.picture, pixel.R(0, 0, 160, 25))
 }
 
-func (r Sprite) Brick() *pixel.Sprite {
-	return pixel.NewSprite(r.picture, pixel.R(0, SpriteHeight - BrickHeight, BrickWidth, SpriteHeight))
+const (
+	Orange = iota
+	Pink
+	Red
+	Green
+	Blue
+)
+
+func (r Sprite) Brick(color int) *pixel.Sprite {
+	var rec = pixel.R(0,0,0,0)
+	switch color {
+	case Orange:
+		rec = pixel.R(0, SpriteHeight - BrickHeight, BrickWidth, SpriteHeight)
+	case Red:
+		minX := BrickWidth + BrickGap
+		rec = pixel.R(minX, SpriteHeight - BrickHeight, minX + BrickWidth, SpriteHeight)
+	case Green:
+		minX := 2*(BrickWidth + BrickGap)
+		rec = pixel.R(minX, SpriteHeight - BrickHeight, minX + BrickWidth, SpriteHeight)
+	case Blue:
+		minX := 3*(BrickWidth + BrickGap)
+		rec = pixel.R(minX, SpriteHeight - BrickHeight, minX + BrickWidth, SpriteHeight)
+	case Pink:
+		maxY := SpriteHeight - BrickHeight - BrickGap
+		rec = pixel.R(0, maxY - BrickHeight, BrickWidth, maxY)
+
+	}
+	return pixel.NewSprite(r.picture, rec)
 }
 
 func (r *Sprite) loadPicture(path string) {
