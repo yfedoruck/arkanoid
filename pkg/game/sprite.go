@@ -14,21 +14,20 @@ const (
 	SpriteHeight = 136
 )
 
-type Sprite struct {
+type Image struct {
 	picture *pixel.PictureData
-	ball    *pixel.Sprite
 }
 
-func NewSprite() *Sprite {
-	var s = &Sprite{}
+func NewImage() *Image {
+	var s = &Image{}
 	s.loadPicture("BasicArkanoidPack.png")
 	return s
 }
 
-func (r Sprite) Ball() *pixel.Sprite {
+func (r Image) Ball() *pixel.Sprite {
 	return pixel.NewSprite(r.picture, pixel.R(0, 32, 24, 33+24))
 }
-func (r Sprite) Board() *pixel.Sprite {
+func (r Image) Board() *pixel.Sprite {
 	return pixel.NewSprite(r.picture, pixel.R(0, 0, 160, 25))
 }
 
@@ -40,7 +39,7 @@ const (
 	Blue
 )
 
-func (r Sprite) Brick(color int) *pixel.Sprite {
+func (r Image) Brick(color int) *pixel.Sprite {
 	var rec = pixel.R(0,0,0,0)
 	switch color {
 	case Orange:
@@ -62,7 +61,7 @@ func (r Sprite) Brick(color int) *pixel.Sprite {
 	return pixel.NewSprite(r.picture, rec)
 }
 
-func (r *Sprite) loadPicture(path string) {
+func (r *Image) loadPicture(path string) {
 	file, err := os.Open(env.BasePath() + filepath.FromSlash("/static/"+path))
 	fail.Check(err)
 	defer func() {

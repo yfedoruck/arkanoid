@@ -24,7 +24,7 @@ func NewBoard(screen *Screen) Board {
 		height:   BoardHeight,
 		win:      screen.Window(),
 		position: pixel.ZV,
-		sprite:   NewSprite().Board(),
+		sprite:   screen.Image().Board(),
 	}
 }
 

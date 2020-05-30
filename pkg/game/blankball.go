@@ -39,12 +39,12 @@ type BlankBall struct {
 	board    *Board
 }
 
-func NewBlankBall(win *pixelgl.Window) *BlankBall {
+func NewBlankBall(scr *Screen) *BlankBall {
 	return &BlankBall{
 		radius:   BallRadius,
-		win:      win,
+		win:      scr.Window(),
 		position: pixel.ZV,
-		sprite:   NewSprite().Ball(),
+		sprite:   scr.Image().Ball(),
 		pushed:   false,
 		delta:    0.0,
 	}

@@ -2,40 +2,40 @@ package game
 
 import (
 	"github.com/faiface/pixel"
-	"github.com/faiface/pixel/pixelgl"
 )
 
 type Wall struct {
-	win   *pixelgl.Window
-	wall  []*Brick
+	screen *Screen
+	wall   []*Brick
 }
 
-func NewWall(win *pixelgl.Window) *Wall {
+func NewWall(screen *Screen) *Wall {
 	var w = &Wall{}
-	w.Build(win)
+	w.Build(screen)
 	return w
 }
 
-func (r *Wall) Build(win *pixelgl.Window) {
+func (r *Wall) Build(screen *Screen) {
+	win := screen.Window()
 	for i := 0.0; i < 15; i++ {
-		brick := NewBrick(win, Orange)
+		brick := NewBrick(screen, Orange)
 		brick.MoveTo(pixel.V(win.Bounds().Min.X+brick.width*(i+1), win.Bounds().H()/2))
 		r.Add(brick)
 
-		brick = NewBrick(win, Green)
-		brick.MoveTo(pixel.V(win.Bounds().Min.X+brick.width*(i+1), win.Bounds().H()/2 + brick.height))
+		brick = NewBrick(screen, Green)
+		brick.MoveTo(pixel.V(win.Bounds().Min.X+brick.width*(i+1), win.Bounds().H()/2+brick.height))
 		r.Add(brick)
 
-		brick = NewBrick(win, Pink)
-		brick.MoveTo(pixel.V(win.Bounds().Min.X+brick.width*(i+1), win.Bounds().H()/2 + 2*brick.height))
+		brick = NewBrick(screen, Pink)
+		brick.MoveTo(pixel.V(win.Bounds().Min.X+brick.width*(i+1), win.Bounds().H()/2+2*brick.height))
 		r.Add(brick)
 
-		brick = NewBrick(win, Blue)
-		brick.MoveTo(pixel.V(win.Bounds().Min.X+brick.width*(i+1), win.Bounds().H()/2 + 3*brick.height))
+		brick = NewBrick(screen, Blue)
+		brick.MoveTo(pixel.V(win.Bounds().Min.X+brick.width*(i+1), win.Bounds().H()/2+3*brick.height))
 		r.Add(brick)
 
-		brick = NewBrick(win, Red)
-		brick.MoveTo(pixel.V(win.Bounds().Min.X+brick.width*(i+1), win.Bounds().H()/2 + 4*brick.height))
+		brick = NewBrick(screen, Red)
+		brick.MoveTo(pixel.V(win.Bounds().Min.X+brick.width*(i+1), win.Bounds().H()/2+4*brick.height))
 		r.Add(brick)
 	}
 }

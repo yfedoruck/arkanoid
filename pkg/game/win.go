@@ -9,10 +9,15 @@ import (
 
 type Screen struct {
 	window *pixelgl.Window
+	image  *Image
 }
 
 func (r Screen) Window() *pixelgl.Window {
 	return r.window
+}
+
+func (r Screen) Image() *Image {
+	return r.image
 }
 
 func NewScreen() *Screen {
@@ -29,5 +34,8 @@ func NewScreen() *Screen {
 	win.Clear(colornames.Greenyellow)
 	win.SetTitle("Arkanoid")
 
-	return &Screen{window: win}
+	return &Screen{
+		window: win,
+		image:  NewImage(),
+	}
 }

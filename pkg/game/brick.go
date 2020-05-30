@@ -27,11 +27,11 @@ type BrickSideX struct {
 	X1, X2, Y float64
 }
 
-func NewBrick(win *pixelgl.Window, color int) *Brick {
+func NewBrick(screen *Screen, color int) *Brick {
 	return &Brick{
-		win:      win,
+		win:      screen.Window(),
 		position: pixel.ZV,
-		sprite:   NewSprite().Brick(color),
+		sprite:   screen.Image().Brick(color),
 		width:    BrickWidth,
 		height:   BrickHeight,
 		live:     true,
