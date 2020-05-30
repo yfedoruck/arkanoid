@@ -14,7 +14,6 @@ const (
 type Brick struct {
 	width    float64
 	height   float64
-	win      *pixelgl.Window
 	position pixel.Vec
 	sprite   *pixel.Sprite
 	live     bool
@@ -27,11 +26,10 @@ type BrickSideX struct {
 	X1, X2, Y float64
 }
 
-func NewBrick(screen *Screen, color int) *Brick {
+func NewBrick(image *Image, color int) *Brick {
 	return &Brick{
-		win:      screen.Window(),
 		position: pixel.ZV,
-		sprite:   screen.Image().Brick(color),
+		sprite:   image.Brick(color),
 		width:    BrickWidth,
 		height:   BrickHeight,
 		live:     true,
@@ -76,12 +74,8 @@ func (r Brick) IsNotHit() bool {
 	return r.live
 }
 
-func (r *Brick) OnStartPosition() {
-	r.position = pixel.V(r.win.Bounds().W()/2, r.win.Bounds().H()/2)
-}
-
-func (r Brick) Draw() {
-	r.sprite.Draw(r.win, pixel.IM.Moved(r.position))
+func (r Brick) Draw(win *pixelgl.Window) {
+	r.sprite.Draw(win, pixel.IM.Moved(r.position))
 }
 
 func (r *Brick) MoveTo(pos pixel.Vec) {

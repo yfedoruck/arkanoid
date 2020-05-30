@@ -18,13 +18,13 @@ type Board struct {
 	sprite   *pixel.Sprite
 }
 
-func NewBoard(screen *Screen) Board {
-	return Board{
+func NewBoard(win *pixelgl.Window, image *Image) *Board {
+	return &Board{
 		width:    BoardWidth,
 		height:   BoardHeight,
-		win:      screen.Window(),
+		win:      win,
 		position: pixel.ZV,
-		sprite:   screen.Image().Board(),
+		sprite:   image.Board(),
 	}
 }
 

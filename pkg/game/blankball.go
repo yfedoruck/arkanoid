@@ -26,7 +26,7 @@ type Ball interface {
 	Delta() float64
 	DeltaX() float64
 	DeltaY() float64
-	Connect(b *Board)
+	Board() *Board
 }
 
 type BlankBall struct {
@@ -39,14 +39,15 @@ type BlankBall struct {
 	board    *Board
 }
 
-func NewBlankBall(scr *Screen) *BlankBall {
+func NewBlankBall(win *pixelgl.Window, image *Image, board *Board) *BlankBall {
 	return &BlankBall{
 		radius:   BallRadius,
-		win:      scr.Window(),
+		win:      win,
 		position: pixel.ZV,
-		sprite:   scr.Image().Ball(),
+		sprite:   image.Ball(),
 		pushed:   false,
 		delta:    0.0,
+		board:    board,
 	}
 }
 
@@ -58,6 +59,7 @@ func CopyBlankBall(b Ball) *BlankBall {
 		sprite:   b.Sprite(),
 		pushed:   b.IsPushed(),
 		delta:    b.Delta(),
+		board:    b.Board(),
 	}
 }
 
@@ -137,8 +139,8 @@ func (r *BlankBall) DeltaY() float64 {
 	return r.delta
 }
 
-func (r *BlankBall) Connect(b *Board) {
-	r.board = b
+func (r *BlankBall) Board() *Board {
+	return r.board
 }
 
 func (r BlankBall) hitRightBorder() bool {

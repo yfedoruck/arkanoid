@@ -15,15 +15,13 @@ func Run() {
 		delta  = 0.0
 		last   = time.Now()
 		fps    = time.Tick(time.Second / 60)
-		bb     = NewBlankBall(screen)
 	)
-	board := NewBoard(screen)
-	ball := NewStopBall(bb)
-	ball.Connect(&board)
+	board := screen.Board()
+	ball := screen.Ball()
 	board.OnStartPosition()
 	ball.OnStartPosition()
 
-	wall := NewWall(screen)
+	wall := screen.Wall()
 	for !win.Closed() {
 		var dt = time.Since(last).Seconds()
 		last = time.Now()
@@ -46,7 +44,6 @@ func Run() {
 		}
 		if ball.IsPushed() {
 			ball = ball.Move(wall)
-			ball.Connect(&board)
 		}
 
 		board.Draw()
