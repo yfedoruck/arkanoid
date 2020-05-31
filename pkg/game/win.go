@@ -3,7 +3,7 @@ package game
 import (
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
-	"github.com/yfedoruck/billiards/pkg/fail"
+	"github.com/yfedoruck/arkanoid/pkg/fail"
 )
 
 type Screen struct {

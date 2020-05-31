@@ -25,6 +25,7 @@ func (r *DownLeft) Move(wall *Wall) Ball {
 
 	if r.crossBottomLine() {
 		if r.hitBoard() {
+			r.BeepHitBoard()
 			return NewUpLeft(CopyBlankBall(r))
 		} else {
 			r.Restart()

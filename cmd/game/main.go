@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/faiface/pixel/pixelgl"
-	"github.com/yfedoruck/billiards/pkg/game"
+	"github.com/yfedoruck/arkanoid/pkg/game"
 )
 
 func main() {

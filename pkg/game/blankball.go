@@ -2,13 +2,15 @@ package game
 
 import (
 	"fmt"
+	"github.com/faiface/beep"
+	"github.com/faiface/beep/speaker"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 )
 
 const (
 	BallRadius = 12
-	BallScale   = 3
+	BallScale  = 3
 )
 
 type Ball interface {
@@ -28,46 +30,51 @@ type Ball interface {
 	DeltaX() float64
 	DeltaY() float64
 	Board() *Board
+	BeepHitBoard()
+	WavHitBoard() *beep.Buffer
 }
 
 type BlankBall struct {
-	radius   float64
-	win      *pixelgl.Window
-	position pixel.Vec
-	sprite   *pixel.Sprite
-	pushed   bool
-	delta    float64
-	board    *Board
+	radius       float64
+	win          *pixelgl.Window
+	position     pixel.Vec
+	sprite       *pixel.Sprite
+	pushed       bool
+	delta        float64
+	board        *Board
+	wavHitBoard  *beep.Buffer
 }
 
 func NewBlankBall(win *pixelgl.Window, board *Board) *BlankBall {
 	sp := BallSprite()
 	return &BlankBall{
-		radius:   BallSprite().Picture().Bounds().H()*BallScale/2,
-		win:      win,
-		position: pixel.ZV,
-		sprite:   sp,
-		pushed:   false,
-		delta:    0.0,
-		board:    board,
+		radius:       BallSprite().Picture().Bounds().H() * BallScale / 2,
+		win:          win,
+		position:     pixel.ZV,
+		sprite:       sp,
+		pushed:       false,
+		delta:        0.0,
+		board:        board,
+		wavHitBoard:  LoadSound("ArkanoidSFX6.wav"),
 	}
 }
 
 func CopyBlankBall(b Ball) *BlankBall {
 	return &BlankBall{
-		radius:   b.Radius(),
-		win:      b.Win(),
-		position: b.Position(),
-		sprite:   b.Sprite(),
-		pushed:   b.IsPushed(),
-		delta:    b.Delta(),
-		board:    b.Board(),
+		radius:      b.Radius(),
+		win:         b.Win(),
+		position:    b.Position(),
+		sprite:      b.Sprite(),
+		pushed:      b.IsPushed(),
+		delta:       b.Delta(),
+		board:       b.Board(),
+		wavHitBoard: b.WavHitBoard(),
 	}
 }
 
 func (r *BlankBall) OnStartPosition() {
 	bp := r.board.StartPosition()
-	r.position = pixel.V(bp.X, bp.Y+r.board.Height()/2 + r.radius)
+	r.position = pixel.V(bp.X, bp.Y+r.board.Height()/2+r.radius)
 }
 
 func (r *BlankBall) Delta() float64 {
@@ -148,19 +155,28 @@ func (r *BlankBall) Board() *Board {
 }
 
 func (r BlankBall) hitRightBorder() bool {
-	return r.position.X >= (r.win.Bounds().Max.X - r.radius - (BgBorderX*BgScale))
+	return r.position.X >= (r.win.Bounds().Max.X - r.radius - (BgBorderX * BgScale))
 }
 
 func (r BlankBall) hitLeftBorder() bool {
-	return r.position.X <= (r.win.Bounds().Min.X + r.radius + (BgBorderX*BgScale))
+	return r.position.X <= (r.win.Bounds().Min.X + r.radius + (BgBorderX * BgScale))
 }
 
 func (r BlankBall) hitCeil() bool {
-	return r.position.Y >= (r.win.Bounds().Max.Y - r.radius - (BgBorderY*BgScale))
+	return r.position.Y >= (r.win.Bounds().Max.Y - r.radius - (BgBorderY * BgScale))
 }
 
 func (r BlankBall) hitBoard() bool {
 	return r.board.Area().X1 <= r.position.X && r.position.X <= r.board.Area().X2
+}
+
+func (r BlankBall) WavHitBoard() *beep.Buffer {
+	return r.wavHitBoard
+}
+
+func (r BlankBall) BeepHitBoard() {
+	shot := r.wavHitBoard.Streamer(0, r.wavHitBoard.Len())
+	speaker.Play(shot)
 }
 
 func (r BlankBall) crossBottomLine() bool {

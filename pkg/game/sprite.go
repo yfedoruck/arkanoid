@@ -2,8 +2,8 @@ package game
 
 import (
 	"github.com/faiface/pixel"
-	"github.com/yfedoruck/billiards/pkg/env"
-	"github.com/yfedoruck/billiards/pkg/fail"
+	"github.com/yfedoruck/arkanoid/pkg/env"
+	"github.com/yfedoruck/arkanoid/pkg/fail"
 	"image"
 	"os"
 	"path/filepath"
