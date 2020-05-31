@@ -40,7 +40,7 @@ func NewScreen() *Screen {
 		image = NewImage()
 	)
 	board := NewBoard(win)
-	ball := NewStopBall(NewBlankBall(win, image, board))
+	ball := NewStopBall(NewBlankBall(win, board))
 	return &Screen{
 		window: win,
 		image:  image,

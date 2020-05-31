@@ -8,6 +8,7 @@ import (
 
 const (
 	BallRadius = 12
+	BallScale   = 3
 )
 
 type Ball interface {
@@ -39,12 +40,13 @@ type BlankBall struct {
 	board    *Board
 }
 
-func NewBlankBall(win *pixelgl.Window, image *Image, board *Board) *BlankBall {
+func NewBlankBall(win *pixelgl.Window, board *Board) *BlankBall {
+	sp := BallSprite()
 	return &BlankBall{
-		radius:   BallRadius,
+		radius:   BallSprite().Picture().Bounds().H()*BallScale/2,
 		win:      win,
 		position: pixel.ZV,
-		sprite:   image.Ball(),
+		sprite:   sp,
 		pushed:   false,
 		delta:    0.0,
 		board:    board,
@@ -110,7 +112,9 @@ func (r *BlankBall) MoveDown() {
 }
 
 func (r BlankBall) Draw() {
-	r.sprite.Draw(r.win, pixel.IM.Moved(r.position))
+	mat := pixel.IM
+	mat = mat.Scaled(pixel.ZV, BallScale)
+	r.sprite.Draw(r.win, mat.Moved(r.position))
 }
 
 func (r BlankBall) Radius() float64 {
@@ -258,4 +262,9 @@ func (r *BlankBall) Restart() {
 	r.position = pixel.ZV
 	r.OnStartPosition()
 	r.board.OnStartPosition()
+}
+
+func BallSprite() *pixel.Sprite {
+	var picture = pixel.PictureDataFromImage(LoadSprite("ball.png"))
+	return pixel.NewSprite(picture, picture.Bounds())
 }
