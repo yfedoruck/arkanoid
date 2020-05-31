@@ -39,7 +39,7 @@ func NewScreen() *Screen {
 		win   = NewWindow()
 		image = NewImage()
 	)
-	board := NewBoard(win, image)
+	board := NewBoard(win)
 	ball := NewStopBall(NewBlankBall(win, image, board))
 	return &Screen{
 		window: win,

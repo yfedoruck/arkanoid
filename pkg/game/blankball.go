@@ -65,7 +65,7 @@ func CopyBlankBall(b Ball) *BlankBall {
 
 func (r *BlankBall) OnStartPosition() {
 	bp := r.board.StartPosition()
-	r.position = pixel.V(bp.X, bp.Y+r.Diameter())
+	r.position = pixel.V(bp.X, bp.Y+r.board.Height()/2 + r.radius)
 }
 
 func (r *BlankBall) Delta() float64 {
@@ -160,7 +160,7 @@ func (r BlankBall) hitBoard() bool {
 }
 
 func (r BlankBall) crossBottomLine() bool {
-	return r.position.Y < (r.win.Bounds().Min.Y + r.radius + r.board.height)
+	return r.position.Y <= (r.win.Bounds().Min.Y + r.radius + r.board.Height())
 }
 
 func (r BlankBall) hitBrickBottom(brick *Brick) bool {
