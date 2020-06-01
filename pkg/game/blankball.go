@@ -1,7 +1,6 @@
 package game
 
 import (
-	"fmt"
 	"github.com/faiface/beep"
 	"github.com/faiface/beep/speaker"
 	"github.com/faiface/pixel"
@@ -32,30 +31,33 @@ type Ball interface {
 	Board() *Board
 	BeepHitBoard()
 	WavHitBoard() *beep.Buffer
+	WavHitBrick() *beep.Buffer
 }
 
 type BlankBall struct {
-	radius       float64
-	win          *pixelgl.Window
-	position     pixel.Vec
-	sprite       *pixel.Sprite
-	pushed       bool
-	delta        float64
-	board        *Board
-	wavHitBoard  *beep.Buffer
+	radius      float64
+	win         *pixelgl.Window
+	position    pixel.Vec
+	sprite      *pixel.Sprite
+	pushed      bool
+	delta       float64
+	board       *Board
+	wavHitBoard *beep.Buffer
+	wavHitBrick *beep.Buffer
 }
 
 func NewBlankBall(win *pixelgl.Window, board *Board) *BlankBall {
 	sp := BallSprite()
 	return &BlankBall{
-		radius:       BallSprite().Picture().Bounds().H() * BallScale / 2,
-		win:          win,
-		position:     pixel.ZV,
-		sprite:       sp,
-		pushed:       false,
-		delta:        0.0,
-		board:        board,
-		wavHitBoard:  LoadSound("ArkanoidSFX6.wav"),
+		radius:      BallSprite().Picture().Bounds().H() * BallScale / 2,
+		win:         win,
+		position:    pixel.ZV,
+		sprite:      sp,
+		pushed:      false,
+		delta:       0.0,
+		board:       board,
+		wavHitBoard: LoadSound("ArkanoidSFX6.wav"),
+		wavHitBrick: LoadSound("ArkanoidSFX7.wav"),
 	}
 }
 
@@ -69,6 +71,7 @@ func CopyBlankBall(b Ball) *BlankBall {
 		delta:       b.Delta(),
 		board:       b.Board(),
 		wavHitBoard: b.WavHitBoard(),
+		wavHitBrick: b.WavHitBrick(),
 	}
 }
 
@@ -167,7 +170,14 @@ func (r BlankBall) hitCeil() bool {
 }
 
 func (r BlankBall) hitBoard() bool {
-	return r.board.Area().X1 <= r.position.X && r.position.X <= r.board.Area().X2
+	var isHit = r.board.Area().X1 <= r.position.X && r.position.X <= r.board.Area().X2
+	if isHit {
+		r.BeepHitBoard()
+	}
+	return isHit
+}
+func (r BlankBall) WavHitBrick() *beep.Buffer {
+	return r.wavHitBrick
 }
 
 func (r BlankBall) WavHitBoard() *beep.Buffer {
@@ -176,6 +186,11 @@ func (r BlankBall) WavHitBoard() *beep.Buffer {
 
 func (r BlankBall) BeepHitBoard() {
 	shot := r.wavHitBoard.Streamer(0, r.wavHitBoard.Len())
+	speaker.Play(shot)
+}
+
+func (r BlankBall) BeepHitBrick() {
+	shot := r.wavHitBrick.Streamer(0, r.wavHitBrick.Len())
 	speaker.Play(shot)
 }
 
@@ -190,7 +205,7 @@ func (r BlankBall) hitBrickBottom(brick *Brick) bool {
 	side := brick.Bottom()
 	if (r.top() >= side.Y) &&
 		(side.X1 <= r.right() && r.left() <= side.X2) {
-		fmt.Println("hitBrickBottom")
+		r.BeepHitBrick()
 		brick.Delete()
 		return true
 	}
@@ -220,7 +235,7 @@ func (r BlankBall) hitBrickTop(brick *Brick) bool {
 	side := brick.Top()
 	if (r.bottom() <= side.Y) &&
 		(side.X1 <= r.right() && r.left() <= side.X2) {
-		fmt.Println("hitBrickTop")
+		r.BeepHitBrick()
 		brick.Delete()
 		return true
 	}
@@ -230,13 +245,12 @@ func (r BlankBall) hitBrickTop(brick *Brick) bool {
 
 func (r BlankBall) hitBrickLeft(brick *Brick) bool {
 	if r.isAfterBrick(brick) {
-		//fmt.Println("isAfterBrick")
 		return false
 	}
 	side := brick.Left()
 	if (r.right() >= side.X) &&
 		(side.Y1 <= r.bottom() && r.top() <= side.Y2) {
-		fmt.Println("hitBrickLeft")
+		r.BeepHitBrick()
 		brick.Delete()
 		return true
 	}
@@ -246,13 +260,12 @@ func (r BlankBall) hitBrickLeft(brick *Brick) bool {
 
 func (r BlankBall) hitBrickRight(brick *Brick) bool {
 	if r.isBeforeBrick(brick) {
-		//fmt.Println("isBeforeBrick")
 		return false
 	}
 	side := brick.Right()
 	if (r.left() <= side.X) &&
 		(side.Y1 <= r.bottom() && r.top() <= side.Y2) {
-		fmt.Println("hitBrickRight")
+		r.BeepHitBrick()
 		brick.Delete()
 		return true
 	}
