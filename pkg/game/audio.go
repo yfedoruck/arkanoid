@@ -24,6 +24,7 @@ func LoadSound(path string) *beep.Buffer {
 	buffer := beep.NewBuffer(format)
 	buffer.Append(streamer)
 
+	// streamer close file
 	err = streamer.Close()
 	fail.Check(err)
 

@@ -2,7 +2,6 @@ package game
 
 import (
 	"github.com/faiface/pixel/pixelgl"
-	"golang.org/x/image/colornames"
 	_ "image/jpeg"
 	_ "image/png"
 	"time"
@@ -22,15 +21,13 @@ func Run() {
 	ball.OnStartPosition()
 
 	wall := screen.Wall()
-	bg := NewBackground(win)
+	bg := screen.Background()
 	for !win.Closed() {
 		var dt = time.Since(last).Seconds()
 		last = time.Now()
 
 		delta = dt * 500
 		ball.SetDelta(delta)
-		win.Clear(colornames.Firebrick)
-		//win.Clear(colornames.Firebrick)
 		bg.Draw()
 
 		if win.Pressed(pixelgl.KeyLeft) {

@@ -7,11 +7,12 @@ import (
 )
 
 type Screen struct {
-	window *pixelgl.Window
-	image  *Image
-	wall   *Wall
-	board  *Board
-	ball   Ball
+	window     *pixelgl.Window
+	image      *Image
+	wall       *Wall
+	board      *Board
+	ball       Ball
+	background *Background
 }
 
 func (r Screen) Window() *pixelgl.Window {
@@ -33,6 +34,9 @@ func (r Screen) Ball() Ball {
 func (r Screen) Image() *Image {
 	return r.image
 }
+func (r Screen) Background() *Background {
+	return r.background
+}
 
 func NewScreen() *Screen {
 	var (
@@ -40,19 +44,21 @@ func NewScreen() *Screen {
 		image = NewImage()
 	)
 	board := NewBoard(win)
+	background := NewBackground(win)
 	ball := NewStopBall(NewBlankBall(win, board))
 	return &Screen{
-		window: win,
-		image:  image,
-		wall:   NewWall(win, image),
-		board:  board,
-		ball:   ball,
+		window:     win,
+		image:      image,
+		wall:       NewWall(win, image),
+		board:      board,
+		ball:       ball,
+		background: background,
 	}
 }
 
 const (
 	WinHeight = 768
-	WinWidth = 714
+	WinWidth  = 714
 )
 
 func NewWindow() *pixelgl.Window {
