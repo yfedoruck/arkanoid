@@ -16,43 +16,80 @@ func NewWall(win *pixelgl.Window, image *Image) *Wall {
 		win:   win,
 		image: image,
 	}
-	w.Build()
+	w.level1()
 	return w
 }
 
-func (r *Wall) Build() {
+func (r *Wall) level1() {
 	dx := 8.0
 	for i := 0.0; i < 10; i++ {
 		brick := NewBrick(r.image, Orange)
-		brick.MoveTo(pixel.V(r.win.Bounds().Min.X+brick.width*(i+1) + dx, r.win.Bounds().H()/2))
+		brick.MoveTo(pixel.V(r.win.Bounds().Min.X+brick.width*(i+1)+dx, r.win.Bounds().H()/2))
 		r.Add(brick)
 
 		brick = NewBrick(r.image, Green)
-		brick.MoveTo(pixel.V(r.win.Bounds().Min.X+brick.width*(i+1) + dx, r.win.Bounds().H()/2+brick.height))
+		brick.MoveTo(pixel.V(r.win.Bounds().Min.X+brick.width*(i+1)+dx, r.win.Bounds().H()/2+brick.height))
 		r.Add(brick)
 
 		brick = NewBrick(r.image, Pink)
-		brick.MoveTo(pixel.V(r.win.Bounds().Min.X+brick.width*(i+1) + dx, r.win.Bounds().H()/2+2*brick.height))
+		brick.MoveTo(pixel.V(r.win.Bounds().Min.X+brick.width*(i+1)+dx, r.win.Bounds().H()/2+2*brick.height))
 		r.Add(brick)
 
 		brick = NewBrick(r.image, Blue)
-		brick.MoveTo(pixel.V(r.win.Bounds().Min.X+brick.width*(i+1) + dx, r.win.Bounds().H()/2+3*brick.height))
+		brick.MoveTo(pixel.V(r.win.Bounds().Min.X+brick.width*(i+1)+dx, r.win.Bounds().H()/2+3*brick.height))
 		r.Add(brick)
 
 		brick = NewBrick(r.image, Red)
-		brick.MoveTo(pixel.V(r.win.Bounds().Min.X+brick.width*(i+1) + dx, r.win.Bounds().H()/2+4*brick.height))
+		brick.MoveTo(pixel.V(r.win.Bounds().Min.X+brick.width*(i+1)+dx, r.win.Bounds().H()/2+4*brick.height))
 		r.Add(brick)
 	}
+}
+
+func (r *Wall) level2() {
+	dx := 8.0
+	var brick *Brick
+	for i := 0.0; i < 10; i++ {
+		brick = NewBrick(r.image, Green)
+		brick.MoveTo(pixel.V(r.win.Bounds().Min.X+brick.width*(i+1)+dx, r.win.Bounds().H()/2))
+		r.Add(brick)
+	}
+	for i := 0.0; i < 9; i++ {
+		brick = NewBrick(r.image, Pink)
+		brick.MoveTo(pixel.V(r.win.Bounds().Min.X+brick.width*(i+1)+dx, r.win.Bounds().H()/2+brick.height))
+		r.Add(brick)
+	}
+	for i := 0.0; i < 8; i++ {
+		brick = NewBrick(r.image, Blue)
+		brick.MoveTo(pixel.V(r.win.Bounds().Min.X+brick.width*(i+1)+dx, r.win.Bounds().H()/2+2*brick.height))
+		r.Add(brick)
+	}
+}
+
+func (r Wall) IsDestroyed() bool {
+	return 0 == len(r.wall)
 }
 
 func (r *Wall) Add(brick *Brick) {
 	r.wall = append(r.wall, brick)
 }
 
-func (r Wall) Draw() {
-	for _, brick := range r.wall {
+func (r *Wall) Draw() {
+	var idx []int
+	for i, brick := range r.wall {
 		if brick.IsNotHit() {
 			brick.Draw(r.win)
+		} else {
+			idx = append(idx, i)
 		}
 	}
+
+	for _, i := range idx {
+		r.DeleteBrick(i)
+	}
+}
+
+func (r *Wall) DeleteBrick(i int) {
+	r.wall[i] = r.wall[len(r.wall)-1]
+	r.wall[len(r.wall)-1] = nil
+	r.wall = r.wall[:len(r.wall)-1]
 }

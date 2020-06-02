@@ -2,53 +2,64 @@ package game
 
 import (
 	"github.com/faiface/pixel/pixelgl"
+	"golang.org/x/image/colornames"
 	_ "image/jpeg"
 	_ "image/png"
 	"time"
 )
 
 func Run() {
-	var (
-		screen = NewScreen()
-		win    = screen.Window()
-		delta  = 0.0
-		last   = time.Now()
-		fps    = time.Tick(time.Second / 60)
-	)
-	board := screen.Board()
-	ball := screen.Ball()
-	board.OnStartPosition()
-	ball.OnStartPosition()
+	screen := NewScreen()
+	screen.Run()
+}
 
-	wall := screen.Wall()
-	bg := screen.Background()
+func (r *Screen) Run() {
+	var (
+		win   = r.Window()
+		delta = 0.0
+		last  = time.Now()
+		fps   = time.Tick(time.Second / 60)
+	)
+	board := r.Board()
+	board.OnStartPosition()
+	r.ball.OnStartPosition()
+
 	for !win.Closed() {
 		var dt = time.Since(last).Seconds()
 		last = time.Now()
 
 		delta = dt * 500
-		ball.SetDelta(delta)
-		bg.Draw()
+		r.ball.SetDelta(delta)
+		r.background.Draw()
 
 		if win.Pressed(pixelgl.KeyLeft) {
 			board.MoveLeft(delta)
-			ball.MoveLeft()
+			r.ball.MoveLeft()
 		}
 		if win.Pressed(pixelgl.KeyRight) {
 			board.MoveRight(delta)
-			ball.MoveRight()
+			r.ball.MoveRight()
 		}
 
 		if win.Pressed(pixelgl.KeySpace) {
-			ball.Push()
+			r.ball.Push()
 		}
-		if ball.IsPushed() {
-			ball = ball.Move(wall)
+
+		if r.wall.IsDestroyed() {
+			if r.NoMoreLevels() {
+				win.Clear(colornames.Black)
+			} else {
+				r.NextLevel()
+			}
+		}
+
+		if r.ball.IsPushed() {
+			r.ball = r.ball.Move(r.wall)
 		}
 
 		board.Draw()
-		ball.Draw()
-		wall.Draw()
+		r.ball.Draw()
+		r.wall.Draw()
 
 		win.Update()
 		<-fps

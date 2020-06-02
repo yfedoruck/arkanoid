@@ -13,6 +13,7 @@ type Screen struct {
 	board      *Board
 	ball       Ball
 	background *Background
+	level      int
 }
 
 func (r Screen) Window() *pixelgl.Window {
@@ -38,6 +39,36 @@ func (r Screen) Background() *Background {
 	return r.background
 }
 
+func (r *Screen) NextLevel() {
+	r.ball = NewStopBall(NewBlankBall(r.window, r.board))
+	r.ball.OnStartPosition()
+	r.board.OnStartPosition()
+	r.level++
+	r.Level()
+}
+
+func (r *Screen) Level() {
+	switch r.level {
+	case 1:
+		r.level1()
+	case 2:
+		r.level2()
+	}
+}
+
+func (r *Screen) level1() {
+	r.background.Level1()
+}
+
+func (r *Screen) level2() {
+	r.background.Level2()
+	r.wall.level2()
+}
+
+func (r Screen) NoMoreLevels() bool {
+	return r.level >= 2
+}
+
 func NewScreen() *Screen {
 	var (
 		win   = NewWindow()
@@ -45,6 +76,7 @@ func NewScreen() *Screen {
 	)
 	board := NewBoard(win)
 	background := NewBackground(win)
+	background.Level1()
 	ball := NewStopBall(NewBlankBall(win, board))
 	return &Screen{
 		window:     win,
@@ -53,6 +85,7 @@ func NewScreen() *Screen {
 		board:      board,
 		ball:       ball,
 		background: background,
+		level:      1,
 	}
 }
 
