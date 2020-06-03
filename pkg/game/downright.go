@@ -15,12 +15,13 @@ func (r *DownRight) Move(wall *Wall) Ball {
 		if r.hitBrick(brick) {
 			r.BeepHitBrick()
 			brick.Delete()
-		}
-		switch {
-		case r.hitBrickTop(brick):
-			return NewUpRight(CopyBlankBall(r))
-		case r.hitBrickLeft(brick):
-			return NewDownLeft(CopyBlankBall(r))
+
+			switch {
+			case r.hitBrickTop(brick):
+				return NewUpRight(CopyBlankBall(r))
+			case r.hitBrickLeft(brick):
+				return NewDownLeft(CopyBlankBall(r))
+			}
 		}
 	}
 
