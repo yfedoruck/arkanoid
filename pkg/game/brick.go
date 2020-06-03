@@ -8,8 +8,20 @@ import (
 const (
 	BrickWidth  = 64.0
 	BrickHeight = 32.0
-	BrickGap = 8.0
+	BrickGap    = 8.0
 )
+
+const (
+	SimpleBrick = iota
+	GunBrick
+	GlueBrick
+)
+
+type BrickSpec int
+
+func (r BrickSpec) String() string {
+	return [...]string{"simple", "gun", "glue"}[r]
+}
 
 type Brick struct {
 	width    float64
@@ -17,6 +29,7 @@ type Brick struct {
 	position pixel.Vec
 	sprite   *pixel.Sprite
 	live     bool
+	spec     BrickSpec
 }
 
 type BrickSideY struct {
@@ -33,6 +46,7 @@ func NewBrick(image *Image, color int) *Brick {
 		width:    BrickWidth,
 		height:   BrickHeight,
 		live:     true,
+		spec:     SimpleBrick,
 	}
 }
 
@@ -70,6 +84,11 @@ func (r Brick) Bottom() BrickSideX {
 func (r *Brick) Delete() {
 	r.live = false
 }
+
+func (r *Brick) SetSpec(spec BrickSpec) {
+	r.spec = spec
+}
+
 func (r Brick) IsNotHit() bool {
 	return r.live
 }

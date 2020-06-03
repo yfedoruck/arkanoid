@@ -42,6 +42,18 @@ func (r *Wall) level1() {
 		brick.MoveTo(pixel.V(r.win.Bounds().Min.X+brick.width*(i+1)+dx, r.win.Bounds().H()/2+4*brick.height))
 		r.Add(brick)
 	}
+	r.SetGiftBricks()
+}
+
+func (r *Wall) SetGiftBricks() {
+	for i, brick := range r.wall {
+		switch {
+		case i%4 == 0:
+			brick.SetSpec(GlueBrick)
+		case i%3 == 0:
+			brick.SetSpec(GunBrick)
+		}
+	}
 }
 
 func (r *Wall) level2() {
