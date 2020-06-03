@@ -44,9 +44,6 @@ func (r *Screen) Run() {
 		if win.Pressed(pixelgl.KeySpace) {
 			r.ball.Push()
 		}
-		if win.Pressed(pixelgl.KeyEscape) {
-			win.SetClosed(true)
-		}
 
 		if r.wall.IsDestroyed() {
 			if r.NoMoreLevels() {
@@ -54,6 +51,8 @@ func (r *Screen) Run() {
 				r.board.CleanSprite()
 				r.ball.CleanSprite()
 				r.text.Draw("You win!\nPress ESC to exit")
+				r.playFinishOnce()
+				r.listenExit()
 			} else {
 				r.NextLevel()
 			}

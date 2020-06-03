@@ -1,6 +1,7 @@
 package game
 
 import (
+	"github.com/faiface/beep/speaker"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 	"github.com/yfedoruck/arkanoid/pkg/fail"
@@ -14,7 +15,8 @@ type Screen struct {
 	ball       Ball
 	background *Background
 	level      int
-	text      *Text
+	text       *Text
+	beepFinish bool
 }
 
 func (r Screen) Window() *pixelgl.Window {
@@ -71,6 +73,21 @@ func (r Screen) NoMoreLevels() bool {
 	return r.level >= 2
 }
 
+func (r Screen) listenExit() {
+	if r.window.Pressed(pixelgl.KeyEscape) {
+		r.window.SetClosed(true)
+	}
+}
+
+func (r *Screen) playFinishOnce() {
+	if !r.beepFinish {
+		buffer := LoadSound("ArkanoidSFX9.wav")
+		melody := buffer.Streamer(0, buffer.Len())
+		speaker.Play(melody)
+		r.beepFinish = true
+	}
+}
+
 func NewScreen() *Screen {
 	var (
 		win   = NewWindow()
@@ -88,7 +105,7 @@ func NewScreen() *Screen {
 		ball:       ball,
 		background: background,
 		level:      1,
-		text:      NewText(win),
+		text:       NewText(win),
 	}
 }
 
