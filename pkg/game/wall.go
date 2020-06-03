@@ -16,7 +16,6 @@ func NewWall(win *pixelgl.Window, image *Image) *Wall {
 		win:   win,
 		image: image,
 	}
-	w.level1()
 	return w
 }
 

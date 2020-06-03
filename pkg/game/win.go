@@ -51,17 +51,18 @@ func (r *Screen) NextLevel() {
 func (r *Screen) Level() {
 	switch r.level {
 	case 1:
-		r.level1()
+		r.Level1()
 	case 2:
-		r.level2()
+		r.Level2()
 	}
 }
 
-func (r *Screen) level1() {
+func (r *Screen) Level1() {
 	r.background.Level1()
+	r.wall.level1()
 }
 
-func (r *Screen) level2() {
+func (r *Screen) Level2() {
 	r.background.Level2()
 	r.wall.level2()
 }

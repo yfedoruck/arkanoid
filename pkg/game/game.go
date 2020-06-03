@@ -22,6 +22,7 @@ func (r *Screen) Run() {
 	)
 	r.board.OnStartPosition()
 	r.ball.OnStartPosition()
+	r.Level1()
 
 	for !win.Closed() {
 		var dt = time.Since(last).Seconds()
