@@ -206,8 +206,6 @@ func (r BlankBall) hitBrickBottom(brick *Brick) bool {
 	side := brick.Bottom()
 	if (r.top() >= side.Y) &&
 		(side.X1 <= r.right() && r.left() <= side.X2) {
-		r.BeepHitBrick()
-		brick.Delete()
 		return true
 	}
 
@@ -236,8 +234,6 @@ func (r BlankBall) hitBrickTop(brick *Brick) bool {
 	side := brick.Top()
 	if (r.bottom() <= side.Y) &&
 		(side.X1 <= r.right() && r.left() <= side.X2) {
-		r.BeepHitBrick()
-		brick.Delete()
 		return true
 	}
 
@@ -251,8 +247,6 @@ func (r BlankBall) hitBrickLeft(brick *Brick) bool {
 	side := brick.Left()
 	if (r.right() >= side.X) &&
 		(side.Y1 <= r.bottom() && r.top() <= side.Y2) {
-		r.BeepHitBrick()
-		brick.Delete()
 		return true
 	}
 
@@ -266,12 +260,17 @@ func (r BlankBall) hitBrickRight(brick *Brick) bool {
 	side := brick.Right()
 	if (r.left() <= side.X) &&
 		(side.Y1 <= r.bottom() && r.top() <= side.Y2) {
-		r.BeepHitBrick()
-		brick.Delete()
 		return true
 	}
 
 	return false
+}
+
+func (r BlankBall) hitBrick(brick *Brick) bool {
+	return r.hitBrickRight(brick) ||
+		r.hitBrickLeft(brick) ||
+		r.hitBrickTop(brick) ||
+		r.hitBrickBottom(brick)
 }
 
 func (r BlankBall) top() float64 {

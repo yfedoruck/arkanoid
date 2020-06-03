@@ -3,7 +3,6 @@ package game
 import (
 	"github.com/faiface/pixel/pixelgl"
 	"golang.org/x/image/colornames"
-	_ "image/jpeg"
 	_ "image/png"
 	"time"
 )

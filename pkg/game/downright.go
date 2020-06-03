@@ -13,11 +13,14 @@ func NewDownRight(bb *BlankBall) Ball {
 func (r *DownRight) Move(wall *Wall) Ball {
 	for _, brick := range wall.wall {
 		if brick.IsNotHit() {
-			if r.hitBrickTop(brick) {
-				return NewUpRight(CopyBlankBall(r))
+			if r.hitBrick(brick) {
+				r.BeepHitBrick()
+				brick.Delete()
 			}
-
-			if r.hitBrickLeft(brick) {
+			switch {
+			case r.hitBrickTop(brick):
+				return NewUpRight(CopyBlankBall(r))
+			case r.hitBrickLeft(brick):
 				return NewDownLeft(CopyBlankBall(r))
 			}
 		}
