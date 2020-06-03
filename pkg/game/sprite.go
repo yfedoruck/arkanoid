@@ -78,3 +78,8 @@ func LoadSprite(path string) image.Image {
 
 	return img
 }
+
+func TransparentPixel() *pixel.Sprite{
+	var picture = pixel.PictureDataFromImage(LoadSprite("1x1.png"))
+	return pixel.NewSprite(picture, picture.Bounds())
+}

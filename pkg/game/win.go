@@ -14,6 +14,7 @@ type Screen struct {
 	ball       Ball
 	background *Background
 	level      int
+	text      *Text
 }
 
 func (r Screen) Window() *pixelgl.Window {
@@ -86,6 +87,7 @@ func NewScreen() *Screen {
 		ball:       ball,
 		background: background,
 		level:      1,
+		text:      NewText(win),
 	}
 }
 

@@ -20,8 +20,7 @@ func (r *Screen) Run() {
 		last  = time.Now()
 		fps   = time.Tick(time.Second / 60)
 	)
-	board := r.Board()
-	board.OnStartPosition()
+	r.board.OnStartPosition()
 	r.ball.OnStartPosition()
 
 	for !win.Closed() {
@@ -33,21 +32,27 @@ func (r *Screen) Run() {
 		r.background.Draw()
 
 		if win.Pressed(pixelgl.KeyLeft) {
-			board.MoveLeft(delta)
+			r.board.MoveLeft(delta)
 			r.ball.MoveLeft()
 		}
 		if win.Pressed(pixelgl.KeyRight) {
-			board.MoveRight(delta)
+			r.board.MoveRight(delta)
 			r.ball.MoveRight()
 		}
 
 		if win.Pressed(pixelgl.KeySpace) {
 			r.ball.Push()
 		}
+		if win.Pressed(pixelgl.KeyEscape) {
+			win.SetClosed(true)
+		}
 
 		if r.wall.IsDestroyed() {
 			if r.NoMoreLevels() {
 				win.Clear(colornames.Black)
+				r.board.CleanSprite()
+				r.ball.CleanSprite()
+				r.text.Draw("You win!\nPress ESC to exit")
 			} else {
 				r.NextLevel()
 			}
@@ -57,7 +62,7 @@ func (r *Screen) Run() {
 			r.ball = r.ball.Move(r.wall)
 		}
 
-		board.Draw()
+		r.board.Draw()
 		r.ball.Draw()
 		r.wall.Draw()
 

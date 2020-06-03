@@ -65,6 +65,17 @@ func (r *Wall) level2() {
 	}
 }
 
+func (r *Wall) levelTest1() {
+	brick := NewBrick(r.image, Orange)
+	brick.MoveTo(pixel.V(r.win.Bounds().Min.X+brick.width*(5)+8, r.win.Bounds().H()/2))
+	r.Add(brick)
+}
+func (r *Wall) levelTest2() {
+	brick := NewBrick(r.image, Green)
+	brick.MoveTo(pixel.V(r.win.Bounds().Min.X+brick.width*(5)+8, r.win.Bounds().H()/2))
+	r.Add(brick)
+}
+
 func (r Wall) IsDestroyed() bool {
 	return 0 == len(r.wall)
 }

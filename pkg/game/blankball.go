@@ -25,6 +25,7 @@ type Ball interface {
 	Win() *pixelgl.Window
 	Position() pixel.Vec
 	Sprite() *pixel.Sprite
+	CleanSprite()
 	Delta() float64
 	DeltaX() float64
 	DeltaY() float64
@@ -291,6 +292,10 @@ func (r *BlankBall) Restart() {
 	r.position = pixel.ZV
 	r.OnStartPosition()
 	r.board.OnStartPosition()
+}
+
+func (r *BlankBall) CleanSprite() {
+	r.sprite = TransparentPixel()
 }
 
 func BallSprite() *pixel.Sprite {
