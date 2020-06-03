@@ -6,6 +6,7 @@ import (
 	"github.com/faiface/pixel/pixelgl"
 	"github.com/faiface/pixel/text"
 	"github.com/yfedoruck/arkanoid/pkg/fail"
+	"golang.org/x/image/colornames"
 	"golang.org/x/image/font/basicfont"
 )
 
@@ -29,6 +30,8 @@ func NewText(win *pixelgl.Window) *Text {
 func (r Text) Draw(s string) {
 	_, err := fmt.Fprintln(r.basicTxt, s)
 	fail.Check(err)
+	r.basicTxt.Color = colornames.Green
+	r.basicTxt.LineHeight = r.atlas.LineHeight() * 1.5
 	r.basicTxt.Draw(r.window, pixel.IM.Scaled(r.basicTxt.Orig, TextScale))
 	r.basicTxt.Clear()
 }
