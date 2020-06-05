@@ -43,7 +43,7 @@ func (r Screen) Background() *Background {
 }
 
 func (r *Screen) NextLevel() {
-	r.ball = NewStopBall(NewBlankBall(r.window, r.board))
+	r.ball = NewStartBall(NewBlankBall(r.window, r.board))
 	r.ball.OnStartPosition()
 	r.board.OnStartPosition()
 	r.level++
@@ -96,7 +96,7 @@ func NewScreen() *Screen {
 	board := NewBoard(win)
 	background := NewBackground(win)
 	background.Level1()
-	ball := NewStopBall(NewBlankBall(win, board))
+	ball := NewStartBall(NewBlankBall(win, board))
 	return &Screen{
 		window:     win,
 		image:      image,

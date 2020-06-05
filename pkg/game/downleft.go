@@ -30,7 +30,7 @@ func (r *DownLeft) Move(wall *Wall) Ball {
 			return NewUpLeft(CopyBlankBall(r))
 		} else {
 			r.Restart()
-			return NewStopBall(CopyBlankBall(r))
+			return NewStartBall(CopyBlankBall(r))
 		}
 	}
 	if r.hitLeftBorder() {
