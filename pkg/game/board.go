@@ -8,7 +8,8 @@ import (
 const (
 	//BoardWidth  = 160
 	//BoardHeight = 25
-	BoardScale = 3
+	BoardScale    = 3.0
+	BigBoardScale = 1.0
 )
 
 type Board struct {
@@ -19,16 +20,32 @@ type Board struct {
 	sprite   *pixel.Sprite
 	picture  *pixel.PictureData
 	sticky   bool
+	scale    float64
 }
 
 func NewBoard(win *pixelgl.Window) *Board {
 	sp := BoardSprite()
+	scale := BoardScale
 	return &Board{
-		width:    sp.Picture().Bounds().W() * BoardScale,
-		height:   sp.Picture().Bounds().H() * BoardScale,
+		width:    sp.Picture().Bounds().W() * scale,
+		height:   sp.Picture().Bounds().H() * scale,
 		win:      win,
 		position: pixel.ZV,
 		sprite:   sp,
+		scale:    scale,
+	}
+}
+
+func NewBigBoard(win *pixelgl.Window) *Board {
+	sp := NewImage().Board()
+	scale := BigBoardScale
+	return &Board{
+		width:    sp.Frame().W() * scale,
+		height:   sp.Frame().H() * scale,
+		win:      win,
+		position: pixel.ZV,
+		sprite:   sp,
+		scale:    scale,
 	}
 }
 
@@ -92,7 +109,7 @@ func (r *Board) CleanSprite() {
 
 func (r Board) Draw() {
 	mat := pixel.IM
-	mat = mat.Scaled(pixel.ZV, BoardScale)
+	mat = mat.Scaled(pixel.ZV, r.scale)
 	r.sprite.Draw(r.win, mat.Moved(r.position))
 }
 

@@ -156,5 +156,8 @@ func (r *Wall) UseGift(spec BrickSpec)  {
 		r.board.Sticky()
 	case GunBrick:
 		r.board.DelSticky()
+		bigBoard := NewBigBoard(r.win)
+		bigBoard.position = r.board.position
+		*r.board = *bigBoard
 	}
 }
