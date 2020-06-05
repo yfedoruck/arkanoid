@@ -100,7 +100,7 @@ func NewScreen() *Screen {
 	return &Screen{
 		window:     win,
 		image:      image,
-		wall:       NewWall(win, image),
+		wall:       NewWall(win, image, board),
 		board:      board,
 		ball:       ball,
 		background: background,

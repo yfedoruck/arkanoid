@@ -56,12 +56,34 @@ func (r *Gift) Fall(delta float64) {
 	r.position.Y -= delta
 }
 
+func (r *Gift) HitBoard(board *Board) bool {
+	var giftBottom = r.Bottom()
+	if (giftBottom.Y <= board.Top().Y) &&
+		(giftBottom.X2 >= board.Top().X1 && giftBottom.X1 <= board.Top().X2) {
+		return true
+	}
+	return false
+}
+
+func (r *Gift) FallAway(board *Board) bool {
+	var giftBottom = r.Bottom()
+	if (giftBottom.Y <= board.Top().Y) &&
+		(giftBottom.X2 < board.Top().X1 || giftBottom.X1 > board.Top().X2) {
+		return true
+	}
+	return false
+}
+
 func (r Gift) Draw(win *pixelgl.Window) {
 	mat := pixel.IM
 	mat = mat.Scaled(pixel.ZV, GiftScale)
 	r.sprite.Draw(win, mat.Moved(r.position))
 }
 
-func (r *Gift) MoveTo(pos pixel.Vec) {
-	r.position = pos
+func (r Gift) Bottom() BrickSideX {
+	return BrickSideX{
+		X1: r.position.X - r.width/2,
+		X2: r.position.X + r.width/2,
+		Y:  r.position.Y - r.height/2,
+	}
 }

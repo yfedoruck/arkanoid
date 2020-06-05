@@ -43,6 +43,14 @@ func (r Board) TopCenter() pixel.Vec {
 	return pixel.V(r.width/2+r.height, r.height)
 }
 
+func (r Board) Top() BrickSideX {
+	return BrickSideX{
+		X1: r.position.X - r.width/2,
+		X2: r.position.X + r.height/2,
+		Y:  r.position.Y + r.height/2,
+	}
+}
+
 func (r *Board) OnStartPosition() {
 	r.position = pixel.V(r.win.Bounds().W()/2, r.height/2)
 }

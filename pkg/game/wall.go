@@ -1,6 +1,7 @@
 package game
 
 import (
+	"fmt"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 )
@@ -10,12 +11,14 @@ type Wall struct {
 	image    *Image
 	wall     []*Brick
 	giftPack []*Gift
+	board    *Board
 }
 
-func NewWall(win *pixelgl.Window, image *Image) *Wall {
+func NewWall(win *pixelgl.Window, image *Image, board *Board) *Wall {
 	var w = &Wall{
 		win:   win,
 		image: image,
+		board: board,
 	}
 	return w
 }
@@ -112,13 +115,26 @@ func (r *Wall) Draw(delta float64) {
 		}
 	}
 
-	for _, gift := range r.giftPack {
-		gift.Fall(delta/2)
+	var delGift []int
+	for i, gift := range r.giftPack {
+		gift.Fall(delta / 2)
+		switch {
+		case gift.HitBoard(r.board):
+			fmt.Println("hit board!")
+			delGift = append(delGift, i)
+		case gift.FallAway(r.board):
+			delGift = append(delGift, i)
+			fmt.Println("fall away!")
+		}
 		gift.Draw(r.win)
 	}
 
 	for _, i := range idx {
 		r.DeleteBrick(i)
+	}
+
+	for _, i := range delGift {
+		r.DeleteGift(i)
 	}
 }
 
@@ -126,4 +142,10 @@ func (r *Wall) DeleteBrick(i int) {
 	r.wall[i] = r.wall[len(r.wall)-1]
 	r.wall[len(r.wall)-1] = nil
 	r.wall = r.wall[:len(r.wall)-1]
+}
+
+func (r *Wall) DeleteGift(i int) {
+	r.giftPack[i] = r.giftPack[len(r.giftPack)-1]
+	r.giftPack[len(r.giftPack)-1] = nil
+	r.giftPack = r.giftPack[:len(r.giftPack)-1]
 }
