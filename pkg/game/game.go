@@ -41,7 +41,7 @@ func (r *Screen) Run() {
 		}
 
 		if win.Pressed(pixelgl.KeySpace) {
-			r.ball.Push()
+			r.ball.Start()
 		}
 
 		if r.wall.IsDestroyed() {
@@ -57,7 +57,7 @@ func (r *Screen) Run() {
 			}
 		}
 
-		if r.ball.IsPushed() {
+		if r.ball.IsStarted() {
 			r.ball = r.ball.Move(r.wall)
 		}
 

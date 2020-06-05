@@ -17,9 +17,9 @@ type Ball interface {
 	OnStartPosition()
 	MoveLeft()
 	MoveRight()
-	Push()
+	Start()
 	SetDelta(delta float64)
-	IsPushed() bool
+	IsStarted() bool
 	Draw()
 	Radius() float64
 	Win() *pixelgl.Window
@@ -40,7 +40,7 @@ type BlankBall struct {
 	win         *pixelgl.Window
 	position    pixel.Vec
 	sprite      *pixel.Sprite
-	pushed      bool
+	started     bool
 	delta       float64
 	board       *Board
 	wavHitBoard *beep.Buffer
@@ -54,7 +54,7 @@ func NewBlankBall(win *pixelgl.Window, board *Board) *BlankBall {
 		win:         win,
 		position:    pixel.ZV,
 		sprite:      sp,
-		pushed:      false,
+		started:     false,
 		delta:       0.0,
 		board:       board,
 		wavHitBoard: LoadSound("ArkanoidSFX6.wav"),
@@ -68,7 +68,7 @@ func CopyBlankBall(b Ball) *BlankBall {
 		win:         b.Win(),
 		position:    b.Position(),
 		sprite:      b.Sprite(),
-		pushed:      b.IsPushed(),
+		started:     b.IsStarted(),
 		delta:       b.Delta(),
 		board:       b.Board(),
 		wavHitBoard: b.WavHitBoard(),
@@ -102,16 +102,16 @@ func (r *BlankBall) MoveRight() {
 	r.position.X += r.delta
 }
 
-func (r *BlankBall) Push() {
-	r.pushed = true
+func (r *BlankBall) Start() {
+	r.started = true
 }
 
 func (r *BlankBall) Stop() {
-	r.pushed = false
+	r.started = false
 }
 
-func (r BlankBall) IsPushed() bool {
-	return r.pushed
+func (r BlankBall) IsStarted() bool {
+	return r.started
 }
 
 func (r *BlankBall) MoveUp() {
