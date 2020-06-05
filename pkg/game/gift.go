@@ -20,19 +20,21 @@ type Gift struct {
 	spec     BrickSpec
 }
 
-func NewGift() *Gift {
+func NewGift(spec BrickSpec) *Gift {
 	var img = LoadSprite("gift.png")
-	return &Gift{
+	gift := &Gift{
 		position: pixel.ZV,
 		picture:  pixel.PictureDataFromImage(img),
 		width:    GiftWidth,
 		height:   GiftHeight,
-		spec:     SimpleBrick,
+		spec:     spec,
 	}
+	gift.Spec()
+	return gift
 }
 
-func (r *Gift) Spec(spec BrickSpec) {
-	switch spec {
+func (r *Gift) Spec() {
+	switch r.spec {
 	case GlueBrick:
 		r.Blue()
 	case GunBrick:

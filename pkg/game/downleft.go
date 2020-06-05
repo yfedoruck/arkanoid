@@ -27,6 +27,9 @@ func (r *DownLeft) Move(wall *Wall) Ball {
 
 	if r.crossBottomLine() {
 		if r.hitBoard() {
+			if r.board.IsSticky(){
+				r.Stop()
+			}
 			return NewUpLeft(CopyBlankBall(r))
 		} else {
 			r.Restart()

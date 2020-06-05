@@ -106,8 +106,7 @@ func (r *Wall) Draw(delta float64) {
 			brick.Draw(r.win)
 		} else {
 			if brick.HasGift() {
-				gift := NewGift()
-				gift.Spec(brick.spec)
+				gift := NewGift(brick.spec)
 				gift.position = brick.position
 				r.giftPack = append(r.giftPack, gift)
 			}
@@ -120,6 +119,7 @@ func (r *Wall) Draw(delta float64) {
 		gift.Fall(delta / 2)
 		switch {
 		case gift.HitBoard(r.board):
+			r.UseGift(gift.spec)
 			fmt.Println("hit board!")
 			delGift = append(delGift, i)
 		case gift.FallAway(r.board):
@@ -148,4 +148,13 @@ func (r *Wall) DeleteGift(i int) {
 	r.giftPack[i] = r.giftPack[len(r.giftPack)-1]
 	r.giftPack[len(r.giftPack)-1] = nil
 	r.giftPack = r.giftPack[:len(r.giftPack)-1]
+}
+
+func (r *Wall) UseGift(spec BrickSpec)  {
+	switch spec {
+	case GlueBrick:
+		r.board.Sticky()
+	case GunBrick:
+		r.board.DelSticky()
+	}
 }

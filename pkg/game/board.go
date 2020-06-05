@@ -18,6 +18,7 @@ type Board struct {
 	position pixel.Vec
 	sprite   *pixel.Sprite
 	picture  *pixel.PictureData
+	sticky   bool
 }
 
 func NewBoard(win *pixelgl.Window) *Board {
@@ -37,6 +38,18 @@ func (r Board) Width() float64 {
 
 func (r Board) Height() float64 {
 	return r.height
+}
+
+func (r *Board) Sticky() {
+	r.sticky = true
+}
+
+func (r *Board) DelSticky() {
+	r.sticky = false
+}
+
+func (r Board) IsSticky() bool {
+	return r.sticky
 }
 
 func (r Board) TopCenter() pixel.Vec {
