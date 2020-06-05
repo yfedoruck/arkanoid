@@ -89,6 +89,9 @@ func (r *BlankBall) SetDelta(delta float64) {
 }
 
 func (r *BlankBall) MoveLeft() {
+	if r.IsStarted(){
+		return
+	}
 	if r.position.X <= r.win.Bounds().Min.X+r.board.Width()/2+(BgBorderX*BgScale) {
 		return
 	}
@@ -96,6 +99,9 @@ func (r *BlankBall) MoveLeft() {
 }
 
 func (r *BlankBall) MoveRight() {
+	if r.IsStarted(){
+		return
+	}
 	if r.position.X >= r.win.Bounds().Max.X-r.board.Width()/2-(BgBorderX*BgScale) {
 		return
 	}

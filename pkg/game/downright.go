@@ -40,8 +40,3 @@ func (r *DownRight) Move(wall *Wall) Ball {
 	r.position.X += r.DeltaX()
 	return r
 }
-
-func (r *DownRight) MoveLeft() {
-}
-func (r *DownRight) MoveRight() {
-}

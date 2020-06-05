@@ -36,8 +36,3 @@ func (r *UpLeft) Move(wall *Wall) Ball {
 	r.position.X -= r.DeltaX()
 	return r
 }
-
-func (r *UpLeft) MoveLeft() {
-}
-func (r *UpLeft) MoveRight() {
-}
