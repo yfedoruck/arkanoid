@@ -104,7 +104,7 @@ func (r *Wall) Draw(delta float64) {
 		} else {
 			if brick.HasGift() {
 				gift := NewGift()
-				gift.Spec(GlueBrick)
+				gift.Spec(brick.spec)
 				gift.position = brick.position
 				r.giftPack = append(r.giftPack, gift)
 			}

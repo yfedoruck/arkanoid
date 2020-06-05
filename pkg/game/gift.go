@@ -45,7 +45,7 @@ func (r *Gift) Blue() {
 }
 
 func (r *Gift) Green() {
-	r.sprite = pixel.NewSprite(r.picture, pixel.R(126, 60, r.picture.Bounds().Max.X, 70))
+	r.sprite = pixel.NewSprite(r.picture, pixel.R(126, 70, r.picture.Bounds().Max.X, 80))
 }
 
 func (r *Gift) SetSpec(spec BrickSpec) {
