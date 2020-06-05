@@ -89,6 +89,10 @@ func (r *Brick) SetSpec(spec BrickSpec) {
 	r.spec = spec
 }
 
+func (r Brick) HasGift() bool {
+	return r.spec != SimpleBrick
+}
+
 func (r Brick) IsNotHit() bool {
 	return r.live
 }

@@ -63,7 +63,7 @@ func (r *Screen) Run() {
 
 		r.board.Draw()
 		r.ball.Draw()
-		r.wall.Draw()
+		r.wall.Draw(delta)
 
 		win.Update()
 		<-fps

@@ -6,9 +6,10 @@ import (
 )
 
 type Wall struct {
-	win   *pixelgl.Window
-	image *Image
-	wall  []*Brick
+	win      *pixelgl.Window
+	image    *Image
+	wall     []*Brick
+	giftPack []*Gift
 }
 
 func NewWall(win *pixelgl.Window, image *Image) *Wall {
@@ -95,14 +96,25 @@ func (r *Wall) Add(brick *Brick) {
 	r.wall = append(r.wall, brick)
 }
 
-func (r *Wall) Draw() {
+func (r *Wall) Draw(delta float64) {
 	var idx []int
 	for i, brick := range r.wall {
 		if brick.IsNotHit() {
 			brick.Draw(r.win)
 		} else {
+			if brick.HasGift() {
+				gift := NewGift()
+				gift.Spec(GlueBrick)
+				gift.position = brick.position
+				r.giftPack = append(r.giftPack, gift)
+			}
 			idx = append(idx, i)
 		}
+	}
+
+	for _, gift := range r.giftPack {
+		gift.Fall(delta/2)
+		gift.Draw(r.win)
 	}
 
 	for _, i := range idx {
