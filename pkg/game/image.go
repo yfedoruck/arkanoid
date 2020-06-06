@@ -41,3 +41,8 @@ func TransparentPixel() *pixel.Sprite{
 	var picture = pixel.PictureDataFromImage(LoadSprite("1x1.png"))
 	return pixel.NewSprite(picture, picture.Bounds())
 }
+
+func SimpleSprite(file string) *pixel.Sprite {
+	var picture = pixel.PictureDataFromImage(LoadSprite(file))
+	return pixel.NewSprite(picture, picture.Bounds())
+}

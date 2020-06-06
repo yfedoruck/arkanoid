@@ -29,6 +29,8 @@ func (r *Screen) Run() {
 
 		delta = dt * 500
 		r.ball.SetDelta(delta)
+		r.wall.SetDelta(delta)
+		r.board.SetDelta(delta)
 		r.background.Draw()
 
 		if win.Pressed(pixelgl.KeyLeft) {
@@ -42,6 +44,10 @@ func (r *Screen) Run() {
 
 		if win.Pressed(pixelgl.KeySpace) {
 			r.ball.Start()
+		}
+
+		if win.JustPressed(pixelgl.KeyX) {
+			r.board.Shot()
 		}
 
 		if r.wall.IsDestroyed() {

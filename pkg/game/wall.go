@@ -11,6 +11,7 @@ type Wall struct {
 	wall     []*Brick
 	giftPack []*Gift
 	board    *Board
+	delta    float64
 }
 
 func NewWall(win *pixelgl.Window, image *BasicPack, board *Board) *Wall {
@@ -139,6 +140,10 @@ func (r *Wall) Draw(delta float64) {
 	for _, i := range delGift {
 		r.DeleteGift(i)
 	}
+}
+
+func (r *Wall) SetDelta(delta float64) {
+	r.delta = delta
 }
 
 func (r *Wall) DeleteBrick(i int) {

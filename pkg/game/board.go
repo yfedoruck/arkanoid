@@ -10,7 +10,7 @@ const (
 	//BoardHeight = 25
 	BoardScale    = 3.0
 	BigBoardScale = 1.0
-	GunScale = 0.25
+	GunScale      = 0.25
 )
 
 type Board struct {
@@ -23,11 +23,14 @@ type Board struct {
 	spBig    *pixel.Sprite
 	spGun    *pixel.Sprite
 	sticky   bool
+	shot     bool
+	magazine []*Bullet
 	scale    float64
+	delta    float64
 }
 
 func NewBoard(win *pixelgl.Window) *Board {
-	sp := BoardSprite()
+	sp := SimpleSprite("racket.png")
 	scale := BoardScale
 	return &Board{
 		width:    sp.Frame().W() * scale,
@@ -63,7 +66,7 @@ func (r *Board) BigBoard() {
 
 func (r *Board) GunBoard() {
 	if r.spGun == nil {
-		r.spGun = GunSprite()
+		r.spGun = SimpleSprite("GunBoard.png")
 	}
 	scale := GunScale
 	r.width = r.spGun.Frame().W() * scale
@@ -73,12 +76,28 @@ func (r *Board) GunBoard() {
 	r.sticky = false
 }
 
+func (r *Board) Shot() {
+	if r.scale != GunScale {
+		return
+	}
+	r.shot = true
+	r.magazine = append(r.magazine, NewBullet(r.win, r.Top(), r.delta))
+}
+
+func (r Board) IsShot() bool {
+	return r.shot
+}
+
 func (r Board) Width() float64 {
 	return r.width
 }
 
 func (r Board) Height() float64 {
 	return r.height
+}
+
+func (r *Board) SetDelta(delta float64) {
+	r.delta = delta
 }
 
 func (r *Board) Sticky() {
@@ -100,7 +119,7 @@ func (r Board) TopCenter() pixel.Vec {
 func (r Board) Top() BrickSideX {
 	return BrickSideX{
 		X1: r.position.X - r.width/2,
-		X2: r.position.X + r.height/2,
+		X2: r.position.X + r.width/2,
 		Y:  r.position.Y + r.height/2,
 	}
 }
@@ -135,6 +154,14 @@ func (r Board) Draw() {
 	mat := pixel.IM
 	mat = mat.Scaled(pixel.ZV, r.scale)
 	r.sprite.Draw(r.win, mat.Moved(r.position))
+
+	if r.IsShot() {
+		for _, bullet := range r.magazine {
+			bullet.ShotLeft()
+			bullet.ShotRight()
+			bullet.Draw()
+		}
+	}
 }
 
 func (r Board) Area() VecX {
@@ -142,14 +169,4 @@ func (r Board) Area() VecX {
 		r.position.X - r.width/2,
 		r.position.X + r.width/2,
 	}
-}
-
-func BoardSprite() *pixel.Sprite {
-	var picture = pixel.PictureDataFromImage(LoadSprite("racket.png"))
-	return pixel.NewSprite(picture, picture.Bounds())
-}
-
-func GunSprite() *pixel.Sprite {
-	var picture = pixel.PictureDataFromImage(LoadSprite("GunBoard.png"))
-	return pixel.NewSprite(picture, picture.Bounds())
 }
