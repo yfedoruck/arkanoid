@@ -48,9 +48,9 @@ type BlankBall struct {
 }
 
 func NewBlankBall(win *pixelgl.Window, board *Board) *BlankBall {
-	sp := BallSprite()
+	sp := SimpleSprite("ball.png")
 	return &BlankBall{
-		radius:      BallSprite().Picture().Bounds().H() * BallScale / 2,
+		radius:      sp.Picture().Bounds().H() * BallScale / 2,
 		win:         win,
 		position:    pixel.ZV,
 		sprite:      sp,
@@ -304,9 +304,4 @@ func (r *BlankBall) Restart() {
 
 func (r *BlankBall) CleanSprite() {
 	r.sprite = TransparentPixel()
-}
-
-func BallSprite() *pixel.Sprite {
-	var picture = pixel.PictureDataFromImage(LoadSprite("ball.png"))
-	return pixel.NewSprite(picture, picture.Bounds())
 }
