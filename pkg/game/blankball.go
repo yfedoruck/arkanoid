@@ -192,11 +192,13 @@ func (r BlankBall) WavHitBoard() *beep.Buffer {
 }
 
 func (r BlankBall) BeepHitBoard() {
+	return
 	shot := r.wavHitBoard.Streamer(0, r.wavHitBoard.Len())
 	speaker.Play(shot)
 }
 
 func (r BlankBall) BeepHitBrick() {
+	return
 	shot := r.wavHitBrick.Streamer(0, r.wavHitBrick.Len())
 	speaker.Play(shot)
 }

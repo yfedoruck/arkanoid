@@ -10,6 +10,7 @@ const (
 	//BoardHeight = 25
 	BoardScale    = 3.0
 	BigBoardScale = 1.0
+	GunScale = 0.25
 )
 
 type Board struct {
@@ -62,9 +63,9 @@ func (r *Board) BigBoard() {
 
 func (r *Board) GunBoard() {
 	if r.spGun == nil {
-		r.spGun = NewBasicPack().Board()
+		r.spGun = GunSprite()
 	}
-	scale := BigBoardScale
+	scale := GunScale
 	r.width = r.spGun.Frame().W() * scale
 	r.height = r.spGun.Frame().H() * scale
 	r.sprite = r.spGun
@@ -145,5 +146,10 @@ func (r Board) Area() VecX {
 
 func BoardSprite() *pixel.Sprite {
 	var picture = pixel.PictureDataFromImage(LoadSprite("racket.png"))
+	return pixel.NewSprite(picture, picture.Bounds())
+}
+
+func GunSprite() *pixel.Sprite {
+	var picture = pixel.PictureDataFromImage(LoadSprite("GunBoard.png"))
 	return pixel.NewSprite(picture, picture.Bounds())
 }
