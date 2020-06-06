@@ -13,8 +13,8 @@ const (
 
 const (
 	SimpleBrick = iota
-	GunBrick
-	GlueBrick
+	BigBoard
+	GlueBoard
 )
 
 type BrickSpec int

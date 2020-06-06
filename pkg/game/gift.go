@@ -35,9 +35,9 @@ func NewGift(spec BrickSpec) *Gift {
 
 func (r *Gift) Spec() {
 	switch r.spec {
-	case GlueBrick:
+	case GlueBoard:
 		r.Blue()
-	case GunBrick:
+	case BigBoard:
 		r.Green()
 	}
 }

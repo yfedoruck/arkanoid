@@ -53,9 +53,9 @@ func (r *Wall) SetGiftBricks() {
 	for i, brick := range r.wall {
 		switch {
 		case i%4 == 0:
-			brick.SetSpec(GlueBrick)
+			brick.SetSpec(GlueBoard)
 		case i%3 == 0:
-			brick.SetSpec(GunBrick)
+			brick.SetSpec(BigBoard)
 		}
 	}
 }
@@ -150,14 +150,24 @@ func (r *Wall) DeleteGift(i int) {
 	r.giftPack = r.giftPack[:len(r.giftPack)-1]
 }
 
-func (r *Wall) UseGift(spec BrickSpec)  {
+func (r *Wall) UseGift(spec BrickSpec) {
 	switch spec {
-	case GlueBrick:
-		r.board.Sticky()
-	case GunBrick:
-		r.board.DelSticky()
-		bigBoard := NewBigBoard(r.win)
-		bigBoard.position = r.board.position
-		*r.board = *bigBoard
+	case GlueBoard:
+		r.StickyBoard()
+	case BigBoard:
+		r.BigBoard()
 	}
+}
+
+func (r *Wall) StickyBoard() {
+	position := r.board.position
+	*r.board = *NewBoard(r.win)
+	r.board.position = position
+	r.board.Sticky()
+}
+
+func (r *Wall) BigBoard() {
+	bigBoard := NewBigBoard(r.win)
+	bigBoard.position = r.board.position
+	*r.board = *bigBoard
 }

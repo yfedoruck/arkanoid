@@ -27,8 +27,8 @@ func NewBoard(win *pixelgl.Window) *Board {
 	sp := BoardSprite()
 	scale := BoardScale
 	return &Board{
-		width:    sp.Picture().Bounds().W() * scale,
-		height:   sp.Picture().Bounds().H() * scale,
+		width:    sp.Frame().W() * scale,
+		height:   sp.Frame().H() * scale,
 		win:      win,
 		position: pixel.ZV,
 		sprite:   sp,
