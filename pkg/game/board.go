@@ -18,7 +18,8 @@ type Board struct {
 	win      *pixelgl.Window
 	position pixel.Vec
 	sprite   *pixel.Sprite
-	picture  *pixel.PictureData
+	spSimple *pixel.Sprite
+	spBig    *pixel.Sprite
 	sticky   bool
 	scale    float64
 }
@@ -32,21 +33,30 @@ func NewBoard(win *pixelgl.Window) *Board {
 		win:      win,
 		position: pixel.ZV,
 		sprite:   sp,
+		spSimple: sp,
 		scale:    scale,
 	}
 }
 
-func NewBigBoard(win *pixelgl.Window) *Board {
-	sp := NewImage().Board()
-	scale := BigBoardScale
-	return &Board{
-		width:    sp.Frame().W() * scale,
-		height:   sp.Frame().H() * scale,
-		win:      win,
-		position: pixel.ZV,
-		sprite:   sp,
-		scale:    scale,
+func (r *Board) Simple() {
+	scale := BoardScale
+	r.width = r.spSimple.Frame().W() * scale
+	r.height = r.spSimple.Frame().H() * scale
+	r.sprite = r.spSimple
+	r.scale = scale
+	r.sticky = false
+}
+
+func (r *Board) BigBoard() {
+	if r.spBig == nil {
+		r.spBig = NewImage().Board()
 	}
+	scale := BigBoardScale
+	r.width = r.spBig.Frame().W() * scale
+	r.height = r.spBig.Frame().H() * scale
+	r.sprite = r.spBig
+	r.scale = scale
+	r.sticky = false
 }
 
 func (r Board) Width() float64 {

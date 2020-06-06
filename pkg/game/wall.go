@@ -1,7 +1,6 @@
 package game
 
 import (
-	"fmt"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 )
@@ -120,11 +119,9 @@ func (r *Wall) Draw(delta float64) {
 		switch {
 		case gift.HitBoard(r.board):
 			r.UseGift(gift.spec)
-			fmt.Println("hit board!")
 			delGift = append(delGift, i)
 		case gift.FallAway(r.board):
 			delGift = append(delGift, i)
-			fmt.Println("fall away!")
 		}
 		gift.Draw(r.win)
 	}
@@ -160,14 +157,10 @@ func (r *Wall) UseGift(spec BrickSpec) {
 }
 
 func (r *Wall) StickyBoard() {
-	position := r.board.position
-	*r.board = *NewBoard(r.win)
-	r.board.position = position
+	r.board.Simple()
 	r.board.Sticky()
 }
 
 func (r *Wall) BigBoard() {
-	bigBoard := NewBigBoard(r.win)
-	bigBoard.position = r.board.position
-	*r.board = *bigBoard
+	r.board.BigBoard()
 }

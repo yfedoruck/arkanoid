@@ -296,7 +296,7 @@ func (r *BlankBall) Restart() {
 	r.Stop()
 	r.position = pixel.ZV
 	r.OnStartPosition()
-	*r.board = *NewBoard(r.win)
+	r.board.Simple()
 	r.board.OnStartPosition()
 }
 
