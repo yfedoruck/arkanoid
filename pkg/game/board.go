@@ -159,19 +159,19 @@ func (r *Board) CleanSprite() {
 	r.sprite = TransparentPixel()
 }
 
-func (r Board) Draw() {
+func (r Board) Draw(wall *Wall) {
 	mat := pixel.IM
 	mat = mat.Scaled(pixel.ZV, r.scale)
 	r.sprite.Draw(r.win, mat.Moved(r.position))
 
 	if r.IsShot() {
-		r.Fire()
+		r.Fire(wall)
 	}
 }
 
-func (r Board) Fire() {
+func (r Board) Fire(wall *Wall) {
 	for _, bullet := range r.magazine {
-		bullet.Shot()
+		bullet.Shot(wall)
 		bullet.Draw()
 	}
 }

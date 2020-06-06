@@ -47,8 +47,35 @@ func (r *Bullet) Right() {
 	r.position = pixel.V(r.boardTop.X2-frame.W()/4, r.boardTop.Y+frame.H()/4)
 }
 
-func (r *Bullet) Shot() {
+func (r *Bullet) Shot(wall *Wall) {
+	for _, brick := range wall.wall {
+		if r.hitBrick(brick) {
+			brick.Delete()
+		}
+	}
 	r.position.Y += r.delta
+}
+
+func (r Bullet) hitBrick(brick *Brick) bool {
+	bottom := brick.Bottom()
+	if (r.top() >= bottom.Y) &&
+		(bottom.X1 <= r.right() && r.left() <= bottom.X2) {
+		return true
+	}
+	return false
+}
+
+func (r Bullet) top() float64 {
+	return r.position.Y + r.height/2
+}
+func (r Bullet) bottom() float64 {
+	return r.position.Y - r.height/2
+}
+func (r Bullet) right() float64 {
+	return r.position.X + r.width/2
+}
+func (r Bullet) left() float64 {
+	return r.position.X - r.width/2
 }
 
 func (r Bullet) Draw() {

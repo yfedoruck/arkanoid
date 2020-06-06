@@ -67,7 +67,7 @@ func (r *Screen) Run() {
 			r.ball = r.ball.Move(r.wall)
 		}
 
-		r.board.Draw()
+		r.board.Draw(r.wall)
 		r.ball.Draw()
 		r.wall.Draw(delta)
 

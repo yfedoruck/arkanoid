@@ -108,54 +108,37 @@ func (r *Wall) AddGiftFrom(brick *Brick) {
 }
 
 func (r *Wall) Draw(delta float64) {
-	var idx []int
-	for i, brick := range r.wall {
+	var wall = r.wall[:0]
+	for _, brick := range r.wall {
 		if brick.IsNotHit() {
 			brick.Draw(r.win)
+			wall = append(wall, brick)
 		} else {
 			if brick.HasGift() {
 				r.AddGiftFrom(brick)
 			}
-			idx = append(idx, i)
 		}
 	}
+	r.wall = wall
 
-	var delGift []int
-	for i, gift := range r.giftPack {
+	var giftPack = r.giftPack[:0]
+	for _, gift := range r.giftPack {
 		gift.Fall(delta / 2)
 		switch {
 		case gift.HitBoard(r.board):
 			r.UseGift(gift.spec)
-			delGift = append(delGift, i)
 		case gift.FallAway(r.board):
-			delGift = append(delGift, i)
+		default:
+			giftPack = append(giftPack, gift)
+
 		}
 		gift.Draw(r.win)
 	}
-
-	for _, i := range idx {
-		r.DeleteBrick(i)
-	}
-
-	for _, i := range delGift {
-		r.DeleteGift(i)
-	}
+	r.giftPack = giftPack
 }
 
 func (r *Wall) SetDelta(delta float64) {
 	r.delta = delta
-}
-
-func (r *Wall) DeleteBrick(i int) {
-	r.wall[i] = r.wall[len(r.wall)-1]
-	r.wall[len(r.wall)-1] = nil
-	r.wall = r.wall[:len(r.wall)-1]
-}
-
-func (r *Wall) DeleteGift(i int) {
-	r.giftPack[i] = r.giftPack[len(r.giftPack)-1]
-	r.giftPack[len(r.giftPack)-1] = nil
-	r.giftPack = r.giftPack[:len(r.giftPack)-1]
 }
 
 func (r *Wall) UseGift(spec BrickSpec) {
