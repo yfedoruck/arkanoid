@@ -19,29 +19,6 @@ type Screen struct {
 	beepFinish bool
 }
 
-func (r Screen) Window() *pixelgl.Window {
-	return r.window
-}
-
-func (r Screen) Wall() *Wall {
-	return r.wall
-}
-
-func (r Screen) Board() *Board {
-	return r.board
-}
-
-func (r Screen) Ball() Ball {
-	return r.ball
-}
-
-func (r Screen) Image() *BasicPack {
-	return r.image
-}
-func (r Screen) Background() *Background {
-	return r.background
-}
-
 func (r *Screen) NextLevel() {
 	r.ball = NewStartBall(NewBlankBall(r.window, r.board))
 	r.ball.OnStartPosition()

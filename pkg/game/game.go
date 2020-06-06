@@ -14,7 +14,7 @@ func Run() {
 
 func (r *Screen) Run() {
 	var (
-		win   = r.Window()
+		win   = r.window
 		delta = 0.0
 		last  = time.Now()
 		fps   = time.Tick(time.Second / 60)
