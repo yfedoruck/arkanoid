@@ -20,6 +20,7 @@ type Board struct {
 	sprite   *pixel.Sprite
 	spSimple *pixel.Sprite
 	spBig    *pixel.Sprite
+	spGun    *pixel.Sprite
 	sticky   bool
 	scale    float64
 }
@@ -49,12 +50,24 @@ func (r *Board) Simple() {
 
 func (r *Board) BigBoard() {
 	if r.spBig == nil {
-		r.spBig = NewImage().Board()
+		r.spBig = NewBasicPack().Board()
 	}
 	scale := BigBoardScale
 	r.width = r.spBig.Frame().W() * scale
 	r.height = r.spBig.Frame().H() * scale
 	r.sprite = r.spBig
+	r.scale = scale
+	r.sticky = false
+}
+
+func (r *Board) GunBoard() {
+	if r.spGun == nil {
+		r.spGun = NewBasicPack().Board()
+	}
+	scale := BigBoardScale
+	r.width = r.spGun.Frame().W() * scale
+	r.height = r.spGun.Frame().H() * scale
+	r.sprite = r.spGun
 	r.scale = scale
 	r.sticky = false
 }

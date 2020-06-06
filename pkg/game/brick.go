@@ -15,6 +15,7 @@ const (
 	SimpleBrick = iota
 	BigBoard
 	GlueBoard
+	GunBoard
 )
 
 type BrickSpec int
@@ -39,7 +40,7 @@ type BrickSideX struct {
 	X1, X2, Y float64
 }
 
-func NewBrick(image *Image, color int) *Brick {
+func NewBrick(image *BasicPack, color int) *Brick {
 	return &Brick{
 		position: pixel.ZV,
 		sprite:   image.Brick(color),

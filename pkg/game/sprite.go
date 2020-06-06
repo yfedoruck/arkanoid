@@ -2,11 +2,6 @@ package game
 
 import (
 	"github.com/faiface/pixel"
-	"github.com/yfedoruck/arkanoid/pkg/env"
-	"github.com/yfedoruck/arkanoid/pkg/fail"
-	"image"
-	"os"
-	"path/filepath"
 )
 
 const (
@@ -14,20 +9,20 @@ const (
 	SpriteHeight = 136
 )
 
-type Image struct {
-	picture *pixel.PictureData
+type BasicPack struct {
+	Image
 }
 
-func NewImage() *Image {
-	var s = &Image{}
+func NewBasicPack() *BasicPack {
+	var s = &BasicPack{}
 	s.load("BasicArkanoidPack.png")
 	return s
 }
 
-func (r Image) Ball() *pixel.Sprite {
+func (r BasicPack) Ball() *pixel.Sprite {
 	return pixel.NewSprite(r.picture, pixel.R(0, 32, 24, 33+24))
 }
-func (r Image) Board() *pixel.Sprite {
+func (r BasicPack) Board() *pixel.Sprite {
 	return pixel.NewSprite(r.picture, pixel.R(0, 0, 160, 25))
 }
 
@@ -39,7 +34,7 @@ const (
 	Blue
 )
 
-func (r Image) Brick(color int) *pixel.Sprite {
+func (r BasicPack) Brick(color int) *pixel.Sprite {
 	var rec = pixel.R(0,0,0,0)
 	switch color {
 	case Orange:
@@ -59,27 +54,4 @@ func (r Image) Brick(color int) *pixel.Sprite {
 
 	}
 	return pixel.NewSprite(r.picture, rec)
-}
-
-func (r *Image) load(path string) {
-	var img = LoadSprite(path)
-	r.picture = pixel.PictureDataFromImage(img)
-}
-
-func LoadSprite(path string) image.Image {
-	file, err := os.Open(env.BasePath() + filepath.FromSlash("/static/"+path))
-	fail.Check(err)
-	defer func() {
-		var err = file.Close()
-		fail.Check(err)
-	}()
-	img, _, err := image.Decode(file)
-	fail.Check(err)
-
-	return img
-}
-
-func TransparentPixel() *pixel.Sprite{
-	var picture = pixel.PictureDataFromImage(LoadSprite("1x1.png"))
-	return pixel.NewSprite(picture, picture.Bounds())
 }

@@ -9,7 +9,7 @@ import (
 
 type Screen struct {
 	window     *pixelgl.Window
-	image      *Image
+	image      *BasicPack
 	wall       *Wall
 	board      *Board
 	ball       Ball
@@ -35,7 +35,7 @@ func (r Screen) Ball() Ball {
 	return r.ball
 }
 
-func (r Screen) Image() *Image {
+func (r Screen) Image() *BasicPack {
 	return r.image
 }
 func (r Screen) Background() *Background {
@@ -91,7 +91,7 @@ func (r *Screen) playFinishOnce() {
 func NewScreen() *Screen {
 	var (
 		win   = NewWindow()
-		image = NewImage()
+		image = NewBasicPack()
 	)
 	board := NewBoard(win)
 	background := NewBackground(win)

@@ -39,6 +39,8 @@ func (r *Gift) Spec() {
 		r.Blue()
 	case BigBoard:
 		r.Green()
+	case GunBoard:
+		r.Red()
 	}
 }
 
@@ -48,6 +50,10 @@ func (r *Gift) Blue() {
 
 func (r *Gift) Green() {
 	r.sprite = pixel.NewSprite(r.picture, pixel.R(126, 70, r.picture.Bounds().Max.X, 80))
+}
+
+func (r *Gift) Red() {
+	r.sprite = pixel.NewSprite(r.picture, pixel.R(126, 40, r.picture.Bounds().Max.X, 50))
 }
 
 func (r *Gift) SetSpec(spec BrickSpec) {

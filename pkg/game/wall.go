@@ -7,13 +7,13 @@ import (
 
 type Wall struct {
 	win      *pixelgl.Window
-	image    *Image
+	image    *BasicPack
 	wall     []*Brick
 	giftPack []*Gift
 	board    *Board
 }
 
-func NewWall(win *pixelgl.Window, image *Image, board *Board) *Wall {
+func NewWall(win *pixelgl.Window, image *BasicPack, board *Board) *Wall {
 	var w = &Wall{
 		win:   win,
 		image: image,
@@ -55,6 +55,8 @@ func (r *Wall) SetGiftBricks() {
 			brick.SetSpec(GlueBoard)
 		case i%3 == 0:
 			brick.SetSpec(BigBoard)
+		case i%2 == 0:
+			brick.SetSpec(GunBoard)
 		}
 	}
 }
@@ -98,6 +100,12 @@ func (r *Wall) Add(brick *Brick) {
 	r.wall = append(r.wall, brick)
 }
 
+func (r *Wall) AddGiftFrom(brick *Brick) {
+	gift := NewGift(brick.spec)
+	gift.position = brick.position
+	r.giftPack = append(r.giftPack, gift)
+}
+
 func (r *Wall) Draw(delta float64) {
 	var idx []int
 	for i, brick := range r.wall {
@@ -105,9 +113,7 @@ func (r *Wall) Draw(delta float64) {
 			brick.Draw(r.win)
 		} else {
 			if brick.HasGift() {
-				gift := NewGift(brick.spec)
-				gift.position = brick.position
-				r.giftPack = append(r.giftPack, gift)
+				r.AddGiftFrom(brick)
 			}
 			idx = append(idx, i)
 		}
@@ -153,6 +159,8 @@ func (r *Wall) UseGift(spec BrickSpec) {
 		r.StickyBoard()
 	case BigBoard:
 		r.BigBoard()
+	case GunBoard:
+		r.GunBoard()
 	}
 }
 
@@ -163,4 +171,8 @@ func (r *Wall) StickyBoard() {
 
 func (r *Wall) BigBoard() {
 	r.board.BigBoard()
+}
+
+func (r *Wall) GunBoard() {
+	r.board.GunBoard()
 }
