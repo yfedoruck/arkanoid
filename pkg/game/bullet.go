@@ -18,8 +18,7 @@ type Bullet struct {
 	shot     bool
 	scale    float64
 	boardTop BrickSideX
-	left     pixel.Vec
-	right    pixel.Vec
+	position pixel.Vec
 }
 
 func NewBullet(win *pixelgl.Window, top BrickSideX, delta float64) *Bullet {
@@ -34,33 +33,26 @@ func NewBullet(win *pixelgl.Window, top BrickSideX, delta float64) *Bullet {
 		scale:    scale,
 		delta:    delta,
 	}
-	bullet.Left()
-	bullet.Right()
 
 	return bullet
 }
 
 func (r *Bullet) Left() {
 	frame := r.sprite.Frame()
-	r.left = pixel.V(r.boardTop.X1+frame.W()/4, r.boardTop.Y+frame.H()/4)
+	r.position = pixel.V(r.boardTop.X1+frame.W()/4, r.boardTop.Y+frame.H()/4)
 }
 
 func (r *Bullet) Right() {
 	frame := r.sprite.Frame()
-	r.right = pixel.V(r.boardTop.X2-frame.W()/4, r.boardTop.Y+frame.H()/4)
+	r.position = pixel.V(r.boardTop.X2-frame.W()/4, r.boardTop.Y+frame.H()/4)
 }
 
-func (r *Bullet) ShotLeft() {
-	r.left.Y += r.delta
-}
-
-func (r *Bullet) ShotRight() {
-	r.right.Y += r.delta
+func (r *Bullet) Shot() {
+	r.position.Y += r.delta
 }
 
 func (r Bullet) Draw() {
 	mat := pixel.IM
 	mat = mat.Scaled(pixel.ZV, BulletScale)
-	r.sprite.Draw(r.win, mat.Moved(r.left))
-	r.sprite.Draw(r.win, mat.Moved(r.right))
+	r.sprite.Draw(r.win, mat.Moved(r.position))
 }

@@ -81,7 +81,16 @@ func (r *Board) Shot() {
 		return
 	}
 	r.shot = true
-	r.magazine = append(r.magazine, NewBullet(r.win, r.Top(), r.delta))
+	r.addBullets()
+}
+
+func (r *Board) addBullets() {
+	bullet1 := NewBullet(r.win, r.Top(), r.delta)
+	bullet1.Left()
+
+	bullet2 := NewBullet(r.win, r.Top(), r.delta)
+	bullet2.Right()
+	r.magazine = append(r.magazine, bullet1, bullet2)
 }
 
 func (r Board) IsShot() bool {
@@ -156,11 +165,14 @@ func (r Board) Draw() {
 	r.sprite.Draw(r.win, mat.Moved(r.position))
 
 	if r.IsShot() {
-		for _, bullet := range r.magazine {
-			bullet.ShotLeft()
-			bullet.ShotRight()
-			bullet.Draw()
-		}
+		r.Fire()
+	}
+}
+
+func (r Board) Fire() {
+	for _, bullet := range r.magazine {
+		bullet.Shot()
+		bullet.Draw()
 	}
 }
 
