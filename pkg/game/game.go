@@ -46,10 +46,6 @@ func (r *Screen) Run() {
 			r.ball.Start()
 		}
 
-		if win.JustPressed(pixelgl.KeyX) {
-			r.board.Shot()
-		}
-
 		if r.wall.IsDestroyed() {
 			if r.NoMoreLevels() {
 				win.Clear(colornames.Black)

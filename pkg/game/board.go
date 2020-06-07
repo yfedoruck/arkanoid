@@ -76,12 +76,8 @@ func (r *Board) GunBoard() {
 	r.sticky = false
 }
 
-func (r *Board) Shot() {
-	if r.scale != GunScale {
-		return
-	}
-	r.shot = true
-	r.addBullets()
+func (r *Board) IsShot() bool {
+	return r.win.JustPressed(pixelgl.KeyX)
 }
 
 func (r *Board) addBullets() {
@@ -93,12 +89,20 @@ func (r *Board) addBullets() {
 	r.magazine = append(r.magazine, bullet1, bullet2)
 }
 
-func (r Board) IsShot() bool {
+func (r *Board) StartFire() {
+	r.shot = true
+}
+
+func (r Board) IsFireOpened() bool {
 	return r.shot
 }
 
 func (r *Board) StopFire() {
 	r.shot = false
+}
+
+func (r Board) IsNotGun() bool {
+	return r.scale != GunScale
 }
 
 func (r Board) Width() float64 {
@@ -172,7 +176,16 @@ func (r *Board) Draw() {
 func (r *Board) Run(wall *Wall) {
 	r.Draw()
 
+	if r.IsNotGun() {
+		return
+	}
+
 	if r.IsShot() {
+		r.addBullets()
+		r.StartFire()
+	}
+
+	if r.IsFireOpened() {
 		r.Fire(wall)
 	}
 }
