@@ -97,6 +97,10 @@ func (r Board) IsShot() bool {
 	return r.shot
 }
 
+func (r *Board) StopFire() {
+	r.shot = false
+}
+
 func (r Board) Width() float64 {
 	return r.width
 }
@@ -159,10 +163,14 @@ func (r *Board) CleanSprite() {
 	r.sprite = TransparentPixel()
 }
 
-func (r *Board) Draw(wall *Wall) {
+func (r *Board) Draw() {
 	mat := pixel.IM
 	mat = mat.Scaled(pixel.ZV, r.scale)
 	r.sprite.Draw(r.win, mat.Moved(r.position))
+}
+
+func (r *Board) Run(wall *Wall) {
+	r.Draw()
 
 	if r.IsShot() {
 		r.Fire(wall)
@@ -179,6 +187,13 @@ func (r *Board) Fire(wall *Wall) {
 		bullet.Fly(wall)
 	}
 	r.magazine = mag
+	if r.EmptyMagazine() {
+		r.StopFire()
+	}
+}
+
+func (r Board) EmptyMagazine() bool {
+	return len(r.magazine) == 0
 }
 
 func (r Board) Area() VecX {
