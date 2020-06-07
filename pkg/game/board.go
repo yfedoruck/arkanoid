@@ -1,6 +1,8 @@
 package game
 
 import (
+	"github.com/faiface/beep"
+	"github.com/faiface/beep/speaker"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 )
@@ -27,6 +29,7 @@ type Board struct {
 	magazine []*Bullet
 	scale    float64
 	delta    float64
+	wavShot  *beep.Buffer
 }
 
 func NewBoard(win *pixelgl.Window) *Board {
@@ -40,6 +43,7 @@ func NewBoard(win *pixelgl.Window) *Board {
 		sprite:   sp,
 		spSimple: sp,
 		scale:    scale,
+		wavShot:  LoadSound("ArkanoidSFX3.wav"),
 	}
 }
 
@@ -183,11 +187,16 @@ func (r *Board) Run(wall *Wall) {
 	if r.IsShot() {
 		r.addBullets()
 		r.StartFire()
+		r.BeepShot()
 	}
 
 	if r.IsFireOpened() {
 		r.Fire(wall)
 	}
+}
+func (r Board) BeepShot() {
+	shot := r.wavShot.Streamer(0, r.wavShot.Len())
+	speaker.Play(shot)
 }
 
 func (r *Board) Fire(wall *Wall) {
