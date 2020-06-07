@@ -1,7 +1,6 @@
 package game
 
 import (
-	"github.com/faiface/beep/speaker"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 	"github.com/yfedoruck/arkanoid/pkg/fail"
@@ -59,8 +58,7 @@ func (r Screen) listenExit() {
 func (r *Screen) playFinishOnce() {
 	if !r.beepFinish {
 		buffer := LoadSound("ArkanoidSFX9.wav")
-		melody := buffer.Streamer(0, buffer.Len())
-		speaker.Play(melody)
+		PlaySound(buffer)
 		r.beepFinish = true
 	}
 }
