@@ -109,6 +109,11 @@ func (r *Wall) AddGiftFrom(brick *Brick) {
 }
 
 func (r *Wall) Draw(delta float64) {
+	r.DrawBricks()
+	r.DrawGifts(delta)
+}
+
+func (r *Wall) DrawBricks() {
 	var wall = r.wall[:0]
 	for _, brick := range r.wall {
 		if brick.IsNotHit() {
@@ -121,7 +126,9 @@ func (r *Wall) Draw(delta float64) {
 		}
 	}
 	r.wall = wall
+}
 
+func (r *Wall) DrawGifts(delta float64) {
 	var giftPack = r.giftPack[:0]
 	for _, gift := range r.giftPack {
 		gift.Fall(delta / 2)
