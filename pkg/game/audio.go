@@ -35,3 +35,8 @@ func InitSpeaker(format beep.Format) {
 	var err = speaker.Init(format.SampleRate, format.SampleRate.N(time.Second/30))
 	fail.Check(err)
 }
+
+func PlaySound(buffer *beep.Buffer) {
+	shot := buffer.Streamer(0, buffer.Len())
+	speaker.Play(shot)
+}

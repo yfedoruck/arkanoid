@@ -2,7 +2,6 @@ package game
 
 import (
 	"github.com/faiface/beep"
-	"github.com/faiface/beep/speaker"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 )
@@ -192,15 +191,11 @@ func (r BlankBall) WavHitBoard() *beep.Buffer {
 }
 
 func (r BlankBall) BeepHitBoard() {
-	return
-	shot := r.wavHitBoard.Streamer(0, r.wavHitBoard.Len())
-	speaker.Play(shot)
+	PlaySound(r.wavHitBoard)
 }
 
 func (r BlankBall) BeepHitBrick() {
-	return
-	shot := r.wavHitBrick.Streamer(0, r.wavHitBrick.Len())
-	speaker.Play(shot)
+	PlaySound(r.wavHitBrick)
 }
 
 func (r BlankBall) crossBottomLine() bool {

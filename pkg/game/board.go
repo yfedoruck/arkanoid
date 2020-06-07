@@ -2,7 +2,6 @@ package game
 
 import (
 	"github.com/faiface/beep"
-	"github.com/faiface/beep/speaker"
 	"github.com/faiface/pixel"
 	"github.com/faiface/pixel/pixelgl"
 )
@@ -195,8 +194,7 @@ func (r *Board) Run(wall *Wall) {
 	}
 }
 func (r Board) BeepShot() {
-	shot := r.wavShot.Streamer(0, r.wavShot.Len())
-	speaker.Play(shot)
+	PlaySound(r.wavShot)
 }
 
 func (r *Board) Fire(wall *Wall) {
