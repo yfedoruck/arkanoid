@@ -216,6 +216,10 @@ func (r Board) EmptyMagazine() bool {
 	return len(r.magazine) == 0
 }
 
+func (r *Board) CleanMagazine() {
+	r.magazine = r.magazine[:0]
+}
+
 func (r Board) Area() VecX {
 	return VecX{
 		r.position.X - r.width/2,

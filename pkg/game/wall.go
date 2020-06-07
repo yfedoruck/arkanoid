@@ -148,6 +148,15 @@ func (r *Wall) DrawGifts(delta float64) {
 func (r *Wall) SetDelta(delta float64) {
 	r.delta = delta
 }
+func (r *Wall) Clean() {
+	r.board.CleanMagazine()
+	r.board.StopFire()
+	r.CleanGifts()
+}
+
+func (r *Wall) CleanGifts() {
+	r.giftPack = r.giftPack[:0]
+}
 
 func (r *Wall) UseGift(spec BrickSpec) {
 	switch spec {

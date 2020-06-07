@@ -47,6 +47,7 @@ func (r *Screen) Run() {
 		}
 
 		if r.wall.IsDestroyed() {
+			r.wall.Clean()
 			if r.NoMoreLevels() {
 				win.Clear(colornames.Black)
 				r.board.CleanSprite()
