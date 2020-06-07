@@ -179,5 +179,7 @@ func (r *Wall) BigBoard() {
 }
 
 func (r *Wall) GunBoard() {
+	r.board.CleanMagazine()
+	r.board.StopFire()
 	r.board.GunBoard()
 }
