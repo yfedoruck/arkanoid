@@ -17,6 +17,7 @@ type Bullet struct {
 	sprite   *pixel.Sprite
 	shot     bool
 	scale    float64
+	live     bool
 	boardTop BrickSideX
 	position pixel.Vec
 }
@@ -32,6 +33,7 @@ func NewBullet(win *pixelgl.Window, top BrickSideX, delta float64) *Bullet {
 		sprite:   sp,
 		scale:    scale,
 		delta:    delta,
+		live:     true,
 	}
 
 	return bullet
@@ -47,13 +49,20 @@ func (r *Bullet) Right() {
 	r.position = pixel.V(r.boardTop.X2-frame.W()/4, r.boardTop.Y+frame.H()/4)
 }
 
-func (r *Bullet) Shot(wall *Wall) {
+func (r *Bullet) Fly(wall *Wall) {
 	for _, brick := range wall.wall {
-		if r.hitBrick(brick) {
+		switch {
+		case r.hitBrick(brick):
 			brick.Delete()
+			r.Explode()
+			return
+		case r.hitCeil():
+			r.Explode()
+			return
 		}
 	}
 	r.position.Y += r.delta
+	r.Draw()
 }
 
 func (r Bullet) hitBrick(brick *Brick) bool {
@@ -63,6 +72,18 @@ func (r Bullet) hitBrick(brick *Brick) bool {
 		return true
 	}
 	return false
+}
+
+func (r Bullet) hitCeil() bool {
+	return r.position.Y >= (r.win.Bounds().Max.Y - r.height/2 - (BgBorderY * BgScale))
+}
+
+func (r *Bullet) Explode() {
+	r.live = false
+}
+
+func (r Bullet) IsExploded() bool {
+	return r.live == false
 }
 
 func (r Bullet) top() float64 {

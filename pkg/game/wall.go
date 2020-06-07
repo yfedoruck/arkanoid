@@ -80,6 +80,7 @@ func (r *Wall) level2() {
 		brick.MoveTo(pixel.V(r.win.Bounds().Min.X+brick.width*(i+1)+dx, r.win.Bounds().H()/2+2*brick.height))
 		r.Add(brick)
 	}
+	r.SetGiftBricks()
 }
 
 func (r *Wall) levelTest1() {
