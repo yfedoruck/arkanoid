@@ -108,6 +108,14 @@ func (r Board) IsNotGun() bool {
 	return r.scale != GunScale
 }
 
+func (r Board) IsGun() bool {
+	return r.scale == GunScale
+}
+
+func (r Board) IsBig() bool {
+	return r.scale == BigBoardScale
+}
+
 func (r Board) Width() float64 {
 	return r.width
 }

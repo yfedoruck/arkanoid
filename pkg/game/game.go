@@ -63,6 +63,9 @@ func (r *Screen) Run() {
 		if r.ball.IsStarted() {
 			r.ball = r.ball.Move(r.wall)
 		}
+		if r.board.IsGun() || r.board.IsBig() {
+			r.ball.Start()
+		}
 
 		r.board.Run(r.wall)
 		r.ball.Draw()
